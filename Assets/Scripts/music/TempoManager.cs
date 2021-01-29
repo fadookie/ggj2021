@@ -24,35 +24,15 @@ public class TempoManager : MonoBehaviour
     public float bpm;
     public int beatsPerMeasure = 4;
     private BehaviorSubject<int> totalBeats;
-    private BehaviorSubject<int> totalMeasures;
+    private BehaviorSubject<TempoInfo> tempo;
+    private int totalMeasures = -1; // Lord forgive me for this off-by-one error
+    private int relativeBeat = 1; // Lord forgive me
     public IObservable<int> TotalBeats => totalBeats;
-    public IObservable<int> TotalMeasures => totalMeasures;
-    public IObservable<TempoInfo> Tempo;
+    public IObservable<TempoInfo> Tempo => tempo;
 
     void Awake() {
         totalBeats = new BehaviorSubject<int>(0);
-        totalMeasures = new BehaviorSubject<int>(-1);
-        var measureStream = totalBeats
-            .Where(beats => beats > 0)
-            .DistinctUntilChanged()
-            .Select(beats => {
-                if ((beats - 1) % beatsPerMeasure == 0) {
-                    return totalMeasures.Value + 1;
-                }
-                return totalMeasures.Value;
-            })
-            .DistinctUntilChanged();
-        measureStream.Subscribe(totalMeasures).AddTo(this);
-        Tempo = totalBeats.CombineLatest(totalMeasures, Tuple.Create)
-            .Select(tuple => {
-                var beats = tuple.Item1;
-                var measures = tuple.Item2;
-                var totalBeatsOfCurrentMeasure = measures * beatsPerMeasure;
-                Debug.Log($"Tempo measures:{measures}, eq: beatsPerMeasure:{beatsPerMeasure} - (totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} - beats:{beats}) = {beatsPerMeasure - (totalBeatsOfCurrentMeasure - beats)}");
-                var relativeBeat = checked(beatsPerMeasure - (totalBeatsOfCurrentMeasure - beats));
-//                Debug.Log($"Tempo beats:{beats} measures:{measures} totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} relativeBeat:{relativeBeat}");
-                return new TempoInfo { TotalBeats = beats, TotalMeasures = measures, RelativeBeat = relativeBeat };
-            });
+        tempo = new BehaviorSubject<TempoInfo>(new TempoInfo { TotalBeats = totalBeats.Value, TotalMeasures = totalMeasures, RelativeBeat = 0} );
         Services.instance.Set(this);
     }
 
@@ -84,18 +64,16 @@ public class TempoManager : MonoBehaviour
     }
     
     public float percentElapsedToNextMeasure() {
-        checked {
-            var measureDelay = measuresPerMinuteToDelay(bpm, beatsPerMeasure);
-            var lastMeasureTime = measureDelay * (totalMeasures.Value - 0);
-            var nextMeasureTime = measureDelay * (totalMeasures.Value - 0 + 1);
-    //        var numerator = (measureDelay * (_totalMeasures + 1) - source.time) - measureDelay;
-            var res = source.time - lastMeasureTime / nextMeasureTime - lastMeasureTime;
-            if (source.time - _lastLogTime > 0.5f) {
+        var measureDelay = measuresPerMinuteToDelay(bpm, beatsPerMeasure);
+        var lastMeasureTime = measureDelay * (totalMeasures - 0);
+        var nextMeasureTime = measureDelay * (totalMeasures - 0 + 1);
+//        var numerator = (measureDelay * (_totalMeasures + 1) - source.time) - measureDelay;
+        var res = source.time - lastMeasureTime / nextMeasureTime - lastMeasureTime;
+        if (source.time - _lastLogTime > 0.5f) {
 //                Debug.Log($"percentElapsedToNextMeasure totalMeasures:{totalMeasures.Value} delay:{measureDelay} time:{source.time} lastMeasure:{lastMeasureTime} nextMeasure:{nextMeasureTime} equation:{source.time - lastMeasureTime} / {nextMeasureTime - lastMeasureTime} = {res}");
-                _lastLogTime = source.time;
-            }
-            return res;
+            _lastLogTime = source.time;
         }
+        return res;
     }
     
     public static float beatsPerMinuteToDelay(float beatsPerMinute) {
@@ -111,5 +89,18 @@ public class TempoManager : MonoBehaviour
 
     void beat() {
         totalBeats.OnNext(totalBeats.Value + 1);
+        ++relativeBeat;
+        if ((totalBeats.Value - 1) % beatsPerMeasure == 0) {
+            ++totalMeasures;
+            relativeBeat = 1;
+        }
+        var beats = totalBeats.Value;
+//        Debug.Log($"Tempo (totalBeats:{beats}) % {beatsPerMeasure} = {(totalBeats.Value) % beatsPerMeasure}");
+        var totalBeatsOfCurrentMeasure = totalMeasures * beatsPerMeasure;
+//        var relativeBeat = beatsPerMeasure - (totalBeatsOfCurrentMeasure - beats);
+        Debug.Log($"Tempo measures:{totalMeasures}, eq: beatsPerMeasure:{beatsPerMeasure} - (totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} - beats:{beats}) = {relativeBeat}");
+    //                Debug.Log($"Tempo beats:{beats} measures:{measures} totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} relativeBeat:{relativeBeat}");
+        var newTempo = new TempoInfo { TotalBeats = beats, TotalMeasures = totalMeasures, RelativeBeat = relativeBeat };
+        tempo.OnNext(newTempo);
     }
 }
