@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using com.eliotlash.core.service;
 using UnityEngine;
 using UniRx;
@@ -8,17 +9,45 @@ using UniRx;
 [RequireComponent(typeof(MusicController))]
 public class TempoManager : MonoBehaviour
 {
+    public struct TempoInfo
+    {
+        public uint TotalBeats;
+        public uint TotalMeasures;
+        public uint RelativeBeat;
+
+        public override string ToString() {
+            return $"{nameof(TotalBeats)}: {TotalBeats}, {nameof(TotalMeasures)}: {TotalMeasures}, {nameof(RelativeBeat)}: {RelativeBeat}";
+        }
+    }
+    
 	AudioSource source;
     public float bpm;
-    public int beatsPerMeasure = 4;
+    public uint beatsPerMeasure = 4;
     private BehaviorSubject<uint> totalBeats;
     private BehaviorSubject<uint> totalMeasures;
     public IObservable<uint> TotalBeats => totalBeats;
     public IObservable<uint> TotalMeasures => totalMeasures;
+    public IObservable<TempoInfo> Tempo;
 
     void Awake() {
         totalBeats = new BehaviorSubject<uint>(0);
         totalMeasures = new BehaviorSubject<uint>(0);
+        var measureStream = totalBeats.Select(beats => {
+            if ((beats - 1) % beatsPerMeasure == 0) {
+                return totalMeasures.Value + 1;
+            }
+            return totalMeasures.Value;
+        });
+        measureStream.Subscribe(totalMeasures).AddTo(this);
+        Tempo = totalBeats.CombineLatest(totalMeasures, Tuple.Create)
+            .Select(tuple => {
+                var beats = tuple.Item1;
+                var measures = tuple.Item2;
+                var totalBeatsOfCurrentMeasure = measures * beatsPerMeasure;
+                var relativeBeat = checked(beatsPerMeasure - (totalBeatsOfCurrentMeasure - beats));
+//                Debug.Log($"Tempo beats:{beats} measures:{measures} totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} relativeBeat:{relativeBeat}");
+                return new TempoInfo { TotalBeats = beats, TotalMeasures = measures, RelativeBeat = relativeBeat };
+            });
         Services.instance.Set(this);
     }
 
@@ -60,7 +89,7 @@ public class TempoManager : MonoBehaviour
         return 1.0f / (beatsPerMinute / 60.0f);
     }
     
-    public static float measuresPerMinuteToDelay(float beatsPerMinute, int beatsPerMeasure) {
+    public static float measuresPerMinuteToDelay(float beatsPerMinute, uint beatsPerMeasure) {
         var beatDelay = beatsPerMinuteToDelay(beatsPerMinute);
         return beatDelay * beatsPerMeasure;
     }
@@ -68,9 +97,5 @@ public class TempoManager : MonoBehaviour
 
     void beat() {
         totalBeats.OnNext(totalBeats.Value + 1);
-        if ((totalBeats.Value - 1) % beatsPerMeasure == 0) {
-            totalMeasures.OnNext(totalMeasures.Value + 1);
-            Debug.LogWarning($"====== MEASURE {totalMeasures.Value} ========");
-        }
     }
 }
