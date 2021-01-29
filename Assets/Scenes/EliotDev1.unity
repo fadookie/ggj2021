@@ -878,6 +878,7 @@ GameObject:
   - component: {fileID: 1924698945}
   - component: {fileID: 1924698944}
   - component: {fileID: 1924698947}
+  - component: {fileID: 1924698948}
   m_Layer: 0
   m_Name: TestMusicListener
   m_TagString: Untagged
@@ -892,7 +893,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924698943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d31af5794cec422dad842b346de3e36, type: 3}
   m_Name: 
@@ -906,7 +907,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924698943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d31af5794cec422dad842b346de3e36, type: 3}
   m_Name: 
@@ -934,13 +935,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924698943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d31af5794cec422dad842b346de3e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   listenedEvent: 2
   newScreenColor: {r: 1, g: 0.25098038, b: 0.8031582, a: 0}
+--- !u!114 &1924698948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924698943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c4839417c14b0da4b3af01b6a3da61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1965721509
 GameObject:
   m_ObjectHideFlags: 0

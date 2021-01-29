@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
+using com.eliotlash.core.service;
 using UnityEngine;
+using UniRx;
 
 [RequireComponent(typeof(MusicController))]
 public class TempoManager : MonoBehaviour
@@ -8,6 +11,14 @@ public class TempoManager : MonoBehaviour
 	AudioSource source;
     public float bpm;
     private uint _beatsSinceSync = 0;
+    private BehaviorSubject<Unit> subject;
+    public IObservable<Unit> beats;
+
+    void Awake() {
+        subject = new BehaviorSubject<Unit>(Unit.Default);
+        beats = subject;
+        Services.instance.Set(this);
+    }
 
     // Start is called before the first frame update
     void Start() {
@@ -33,5 +44,6 @@ public class TempoManager : MonoBehaviour
     void beat() {
         _beatsSinceSync++;
 //        ReactiveManager.Instance.beatEvent(tempoEventChannel, BPM);
+        subject.OnNext(Unit.Default);
     }
 }
