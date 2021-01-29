@@ -37,8 +37,9 @@ public class TapTarget : MonoBehaviour
 
     private void Update() {
         if (!wasTapped) {
-            var percentElapsedToNextBeat = Services.instance.Get<TempoManager>().percentElapsedToNextBeat();
-            sprite.color = Color.Lerp(lerpStartColor, lerpEndColor, percentElapsedToNextBeat);
+//            var percentElapsedToNextBeat = Services.instance.Get<TempoManager>().percentElapsedToNextBeat();
+            var percentElapsedToNextMesaure = Services.instance.Get<TempoManager>().percentElapsedToNextMeasure();
+            sprite.color = Color.Lerp(lerpStartColor, lerpEndColor, percentElapsedToNextMesaure);
         }
     }
 

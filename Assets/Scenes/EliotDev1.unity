@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 120
-  notesPerMeasure: 4
+  beatsPerMeasure: 4
 --- !u!82 &306706549
 AudioSource:
   m_ObjectHideFlags: 0
@@ -754,7 +754,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1479928134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1157,7 +1157,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1924698944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1368,12 +1368,12 @@ PrefabInstance:
     - target: {fileID: 405265021172509077, guid: 53d777bf3d72e4fbdbd438a9837f6f23,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 405265021172509080, guid: 53d777bf3d72e4fbdbd438a9837f6f23,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 405265021172509080, guid: 53d777bf3d72e4fbdbd438a9837f6f23,
         type: 3}
