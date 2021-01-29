@@ -14,13 +14,13 @@ namespace music
             tempoManager.Tempo.Subscribe(OnTempo).AddTo(this);
         }
 
-        void OnBeat(uint totalBeats) {
+        void OnBeat(int totalBeats) {
 //            Debug.Log($"BeatListener OnBeat total:{totalBeats}");
 //			Camera.main.backgroundColor = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
         }
         
-        void OnMeasure(uint totalMeasures) {
-//            Debug.Log($"BeatListener OnMeasure total:{totalMeasures}");
+        void OnMeasure(int totalMeasures) {
+            Debug.LogWarning($"======== BeatListener OnMeasure total:{totalMeasures}");
 //			Camera.main.backgroundColor = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
         }
 

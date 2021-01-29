@@ -11,9 +11,9 @@ public class TempoManager : MonoBehaviour
 {
     public struct TempoInfo
     {
-        public uint TotalBeats;
-        public uint TotalMeasures;
-        public uint RelativeBeat;
+        public int TotalBeats;
+        public int TotalMeasures;
+        public int RelativeBeat;
 
         public override string ToString() {
             return $"{nameof(TotalBeats)}: {TotalBeats}, {nameof(TotalMeasures)}: {TotalMeasures}, {nameof(RelativeBeat)}: {RelativeBeat}";
@@ -22,28 +22,33 @@ public class TempoManager : MonoBehaviour
     
 	AudioSource source;
     public float bpm;
-    public uint beatsPerMeasure = 4;
-    private BehaviorSubject<uint> totalBeats;
-    private BehaviorSubject<uint> totalMeasures;
-    public IObservable<uint> TotalBeats => totalBeats;
-    public IObservable<uint> TotalMeasures => totalMeasures;
+    public int beatsPerMeasure = 4;
+    private BehaviorSubject<int> totalBeats;
+    private BehaviorSubject<int> totalMeasures;
+    public IObservable<int> TotalBeats => totalBeats;
+    public IObservable<int> TotalMeasures => totalMeasures;
     public IObservable<TempoInfo> Tempo;
 
     void Awake() {
-        totalBeats = new BehaviorSubject<uint>(0);
-        totalMeasures = new BehaviorSubject<uint>(0);
-        var measureStream = totalBeats.Select(beats => {
-            if ((beats - 1) % beatsPerMeasure == 0) {
-                return totalMeasures.Value + 1;
-            }
-            return totalMeasures.Value;
-        });
+        totalBeats = new BehaviorSubject<int>(0);
+        totalMeasures = new BehaviorSubject<int>(-1);
+        var measureStream = totalBeats
+            .Where(beats => beats > 0)
+            .DistinctUntilChanged()
+            .Select(beats => {
+                if ((beats - 1) % beatsPerMeasure == 0) {
+                    return totalMeasures.Value + 1;
+                }
+                return totalMeasures.Value;
+            })
+            .DistinctUntilChanged();
         measureStream.Subscribe(totalMeasures).AddTo(this);
         Tempo = totalBeats.CombineLatest(totalMeasures, Tuple.Create)
             .Select(tuple => {
                 var beats = tuple.Item1;
                 var measures = tuple.Item2;
                 var totalBeatsOfCurrentMeasure = measures * beatsPerMeasure;
+                Debug.Log($"Tempo measures:{measures}, eq: beatsPerMeasure:{beatsPerMeasure} - (totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} - beats:{beats}) = {beatsPerMeasure - (totalBeatsOfCurrentMeasure - beats)}");
                 var relativeBeat = checked(beatsPerMeasure - (totalBeatsOfCurrentMeasure - beats));
 //                Debug.Log($"Tempo beats:{beats} measures:{measures} totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} relativeBeat:{relativeBeat}");
                 return new TempoInfo { TotalBeats = beats, TotalMeasures = measures, RelativeBeat = relativeBeat };
@@ -66,22 +71,31 @@ public class TempoManager : MonoBehaviour
         }
     }
 
+    private float _lastLogTime;
     public float percentElapsedToNextBeat() {
         var beatDelay = beatsPerMinuteToDelay(bpm);
         var numerator = (beatDelay * (totalBeats.Value + 1) - source.time) - beatDelay;
         var res =  1 - (numerator / beatDelay);
-        Debug.Log($"percentElapsedToNextBeat delay:{beatDelay} time:{source.time} nextBeat:{beatDelay * (totalBeats.Value + 1)} numerator:{numerator} pct:{res}");
+        if (source.time - _lastLogTime > 0.5f) {
+//            Debug.Log($"percentElapsedToNextBeat delay:{beatDelay} time:{source.time} nextBeat:{beatDelay * (totalBeats.Value + 1)} numerator:{numerator} pct:{res}");
+            _lastLogTime = source.time;
+        }
         return res;
     }
     
     public float percentElapsedToNextMeasure() {
-        var measureDelay = measuresPerMinuteToDelay(bpm, beatsPerMeasure);
-        var lastMeasureTime = measureDelay * totalMeasures.Value;
-        var nextMeasureTime = measureDelay * (totalMeasures.Value + 1);
-//        var numerator = (measureDelay * (_totalMeasures + 1) - source.time) - measureDelay;
-        var res = source.time - lastMeasureTime / nextMeasureTime - lastMeasureTime;
-//        Debug.Log($"percentElapsedToNextMeasure delay:{measureDelay} time:{source.time} lastMeasure:{lastMeasureTime} nextMeasure:{nextMeasureTime} equation:{source.time - lastMeasureTime} / {nextMeasureTime - lastMeasureTime} = {res}");
-        return res;
+        checked {
+            var measureDelay = measuresPerMinuteToDelay(bpm, beatsPerMeasure);
+            var lastMeasureTime = measureDelay * (totalMeasures.Value - 0);
+            var nextMeasureTime = measureDelay * (totalMeasures.Value - 0 + 1);
+    //        var numerator = (measureDelay * (_totalMeasures + 1) - source.time) - measureDelay;
+            var res = source.time - lastMeasureTime / nextMeasureTime - lastMeasureTime;
+            if (source.time - _lastLogTime > 0.5f) {
+//                Debug.Log($"percentElapsedToNextMeasure totalMeasures:{totalMeasures.Value} delay:{measureDelay} time:{source.time} lastMeasure:{lastMeasureTime} nextMeasure:{nextMeasureTime} equation:{source.time - lastMeasureTime} / {nextMeasureTime - lastMeasureTime} = {res}");
+                _lastLogTime = source.time;
+            }
+            return res;
+        }
     }
     
     public static float beatsPerMinuteToDelay(float beatsPerMinute) {
@@ -89,7 +103,7 @@ public class TempoManager : MonoBehaviour
         return 1.0f / (beatsPerMinute / 60.0f);
     }
     
-    public static float measuresPerMinuteToDelay(float beatsPerMinute, uint beatsPerMeasure) {
+    public static float measuresPerMinuteToDelay(float beatsPerMinute, int beatsPerMeasure) {
         var beatDelay = beatsPerMinuteToDelay(beatsPerMinute);
         return beatDelay * beatsPerMeasure;
     }

@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using com.eliotlash.core.service;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicController : MonoBehaviour {
@@ -17,7 +16,7 @@ public class MusicController : MonoBehaviour {
 		Break1,
 		Break1End,
 		Outtro,
-		End,
+		End
 
 		/* For Son:
 		LyricsStart,
@@ -37,12 +36,12 @@ public class MusicController : MonoBehaviour {
 
 	public List<MusicEvent> events = new List<MusicEvent> {
 		//For Raney2
-		new MusicEvent(0, MusicEventType.Start),
-		new MusicEvent(690327, MusicEventType.Synth1),
-		new MusicEvent(1382652, MusicEventType.Synth2),
-		new MusicEvent(2768088, MusicEventType.Break1),
-		new MusicEvent(4142762, MusicEventType.Break1End),
-		new MusicEvent(6222134, MusicEventType.Outtro),
+//		new MusicEvent(0, MusicEventType.Start),
+//		new MusicEvent(690327, MusicEventType.Synth1),
+//		new MusicEvent(1382652, MusicEventType.Synth2),
+//		new MusicEvent(2768088, MusicEventType.Break1),
+//		new MusicEvent(4142762, MusicEventType.Break1End),
+//		new MusicEvent(6222134, MusicEventType.Outtro),
 //		new MusicEvent(6571292, MusicEventType.End), Doesn't seem to fire, hardcode this
 		/* For Son:
 		new MusicEvent(35955, MusicEventType.Start),
@@ -55,12 +54,12 @@ public class MusicController : MonoBehaviour {
 	List<MusicEvent> popped = new List<MusicEvent>(3);
 
 	public AudioSource source;
-	bool endPopped = false;
+	bool endPopped;
 
 
 	private void OnEnable() {
 		if (Services.instance.Get<MusicController>() == null) {
-			Services.instance.Set<MusicController>(this);
+			Services.instance.Set(this);
 		}
 	}
 	
