@@ -10,7 +10,8 @@ public class TempoManager : MonoBehaviour
 {
 	AudioSource source;
     public float bpm;
-    private uint _beatsSinceSync = 0;
+    public int notesPerMeasure = 4;
+    private uint _totalBeats = 0;
     private BehaviorSubject<Unit> subject;
     public IObservable<Unit> beats;
 
@@ -29,20 +30,40 @@ public class TempoManager : MonoBehaviour
     void Update()
     {
         //Check beat timer and trigger beat if neccessary
-        if (source.time > beatsPerMinuteToDelay(bpm) * _beatsSinceSync) {
-            Debug.Log(string.Format("BEAT - bpm={0} bpmToDelay={1} beatsSinceSync={2} nextBeatTime={3} > time={4}", bpm, beatsPerMinuteToDelay(bpm), _beatsSinceSync, beatsPerMinuteToDelay(bpm) * _beatsSinceSync, Time.time)); 
+        if (source.time > beatsPerMinuteToDelay(bpm) * _totalBeats) {
+            Debug.Log(string.Format("BEAT - bpm={0} bpmToDelay={1} beatsSinceSync={2} nextBeatTime={3} > time={4}", bpm, beatsPerMinuteToDelay(bpm), _totalBeats, beatsPerMinuteToDelay(bpm) * _totalBeats, Time.time)); 
             beat();
         }
     }
+
+    public float percentElapsedToNextBeat() {
+        var beatDelay = beatsPerMinuteToDelay(bpm);
+        var numerator = (beatDelay * (_totalBeats + 1) - source.time) - beatDelay;
+        var res =  1 - (numerator / beatDelay);
+        Debug.Log($"percentElapsedToNextBeat delay:{beatDelay} time:{source.time} nextBeat:{beatDelay * (_totalBeats + 1)} numerator:{numerator} pct:{res}");
+        return res;
+    }
+    
+//    public float percentElapsedToNextMeasure() {
+//        var beatDelay = beatsPerMinuteToDelay(bpm);
+//        var numerator = (beatDelay * (_totalBeats + 1) - source.time) - beatDelay;
+//        var res =  1 - (numerator / beatDelay);
+//        Debug.Log($"percentElapsedToNextMeasure delay:{beatDelay} time:{source.time} nextBeat:{beatDelay * (_totalBeats + 1)} numerator:{numerator} pct:{res}");
+//        return res;
+//    }
     
     public static float beatsPerMinuteToDelay(float beatsPerMinute) {
         //beats per second = beatsPerMinute / 60
         return 1.0f / (beatsPerMinute / 60.0f);
     }
+    
+//    public static float measuresPerMinuteToDelay(float beatsPerMinute, int beatsPerMeasure) {
+//        var beatDelay = beatsPerMinuteToDelay(beatsPerMinute);
+//    }
 
 
     void beat() {
-        _beatsSinceSync++;
+        _totalBeats++;
 //        ReactiveManager.Instance.beatEvent(tempoEventChannel, BPM);
         subject.OnNext(Unit.Default);
     }
