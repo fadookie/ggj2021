@@ -54,7 +54,7 @@ public class MusicController : MonoBehaviour {
 
 	List<MusicEvent> popped = new List<MusicEvent>(3);
 
-	AudioSource source;
+	public AudioSource source;
 	bool endPopped = false;
 
 
@@ -62,11 +62,6 @@ public class MusicController : MonoBehaviour {
 		if (Services.instance.Get<MusicController>() == null) {
 			Services.instance.Set<MusicController>(this);
 		}
-	}
-
-	// Use this for initialization
-	void Start () {
-		source = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
