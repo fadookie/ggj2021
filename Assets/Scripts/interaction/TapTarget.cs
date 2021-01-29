@@ -11,6 +11,9 @@ public class TapTarget : MonoBehaviour
 {
     private bool wasTapped;
     private SpriteShapeRenderer sprite;
+    static readonly Color lerpStartColor = new Color(0, 0, 0, 0.5f);
+    static readonly Color lerpEndColor = new Color(1, 1, 1, 0.5f);
+    static readonly Color tappedColor = new Color(1, 0, 0, 0.5f);
 
     private void Start() {
         sprite = GetComponent<SpriteShapeRenderer>();
@@ -27,7 +30,7 @@ public class TapTarget : MonoBehaviour
     }
 
     private void tappedHandler(object sender, EventArgs e) {
-        sprite.color = Color.red;
+        sprite.color = tappedColor;
         wasTapped = true;
         StartCoroutine(Death());
     }
@@ -35,12 +38,13 @@ public class TapTarget : MonoBehaviour
     private void Update() {
         if (!wasTapped) {
             var percentElapsedToNextBeat = Services.instance.Get<TempoManager>().percentElapsedToNextBeat();
-            sprite.color = Color.Lerp(Color.black, Color.white, percentElapsedToNextBeat);
+            sprite.color = Color.Lerp(lerpStartColor, lerpEndColor, percentElapsedToNextBeat);
         }
     }
 
     IEnumerator Death() {
         yield return new WaitForSeconds(1f);
-        Destroy(this);
+        sprite.enabled = false;
+        Destroy(gameObject);
     }
 }
