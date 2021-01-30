@@ -104,7 +104,7 @@ namespace TouchScript.Behaviors.Cursors.UI
                 texture = Generate();
                 textureCache.Add(hash, texture);
             }
-            apply();
+//            Apply();
         }
 
         private void OnValidate()
@@ -117,10 +117,10 @@ namespace TouchScript.Behaviors.Cursors.UI
             if (texture != null)
                 DestroyImmediate(texture);
             texture = Generate();
-            apply();
+            Apply();
         }
 
-        private void apply()
+        public void Apply()
         {
             var r = GetComponent<RawImage>();
             if (r == null) throw new Exception("GradientTexture must be on an UI element with RawImage component.");

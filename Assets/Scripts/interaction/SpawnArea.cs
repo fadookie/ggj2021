@@ -26,8 +26,8 @@ public class SpawnArea : MonoBehaviour {
 	}
 	
 	void OnTempo(TempoManager.TempoInfo info) {
-		if (info.RelativeBeat % 2 != 0) {
-			// Beats 1 & 3
+		if (info.RelativeBeat % 2 == 0) {
+			// Beats 2 & 4
 			Spawn();
 		}
 	}

@@ -21,9 +21,12 @@ public class InputController : MonoBehaviour
     }
     private void pointersPressedHandler(object sender, PointerEventArgs e)
     {
-        foreach (var pointer in e.Pointers)
-        {
+        foreach (var pointer in e.Pointers) {
             Services.instance.Get<NavPointManager>().AddNavPoint(pointer.Position);
+            var accuracy = Services.instance.Get<TempoManager>().getAccuracy();
+            if (accuracy == TempoManager.Accuracy.Great) {
+                Services.instance.Get<PlayerController>().Heal();
+            }
         }
     }
 }
