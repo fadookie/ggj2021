@@ -20,9 +20,18 @@ public class TempoManager : MonoBehaviour
         }
     }
     
+    public enum Accuracy
+    {
+        Great,
+        Mediocre,
+        Fail,
+    }
+    
 	AudioSource source;
     public float bpm;
     public int beatsPerMeasure = 4;
+    public float greatAccuracy = 0.20f;
+    public float mediocreAccuracy = 1.0f;
     private BehaviorSubject<int> totalBeats;
     private BehaviorSubject<TempoInfo> tempo;
     private int totalMeasures = -1; // Lord forgive me for this off-by-one error
@@ -52,6 +61,33 @@ public class TempoManager : MonoBehaviour
             Debug.Log(string.Format("BEAT - bpm={0} bpmToDelay={1} beatsSinceSync={2} nextBeatTime={3} > time={4}", bpm, beatsPerMinuteToDelay(bpm), totalBeats.Value, beatsPerMinuteToDelay(bpm) * totalBeats.Value, Time.time)); 
             beat();
         }
+    }
+
+    public float getAccuracyTime() {
+        var currentBeat = totalBeats.Value;
+        if (relativeBeat % 2 != 0) {
+            // Beats 1 & 3 - shift back by one to check upbeat accuracy
+            --currentBeat;
+        }
+        var nextBeat = currentBeat + 2;
+        var lastBeatTime = beatTime(currentBeat);
+        var nextBeatTime = beatTime(nextBeat);
+        var lastAccuracy = Mathf.Abs(SourceTime - lastBeatTime);
+        var nextAccuracy = Mathf.Abs(SourceTime - nextBeatTime);
+        var closestAccuracy = Mathf.Min(lastAccuracy, nextAccuracy);
+        Debug.LogWarning($"getAccuracyTime: relativeBeat:{relativeBeat} currentBeat:{currentBeat} nextBeat:{nextBeat} lastBeatTime:{lastBeatTime} nextBeatTime:{nextBeatTime} sourceTime:{SourceTime} lastAccuracy:{lastAccuracy} nextAccuracy:{nextAccuracy} closestAccuracy:{closestAccuracy}");
+        return closestAccuracy;
+    }
+
+    public Accuracy getAccuracy() {
+        var accuracyTime = getAccuracyTime();
+        if (accuracyTime <= greatAccuracy) {
+            return Accuracy.Great;
+        }
+        if (accuracyTime > greatAccuracy && accuracyTime < mediocreAccuracy) {
+            return Accuracy.Mediocre;
+        }
+        return Accuracy.Fail;
     }
 
     private float _lastLogTime;

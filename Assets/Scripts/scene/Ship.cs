@@ -38,7 +38,7 @@ public class Ship : MonoBehaviour
         do {
             elapsedTime = Time.time - navStartTime;
             transform.position = Vector3.Lerp(navStartPos, nextNavPoint.transform.position, elapsedTime / navDuration);
-            Debug.LogWarning($"FlyToNavPoint navDuration:{navDuration} navStartPos:{navStartPos} navStartTime:{navStartTime} elapsedTime:{elapsedTime}");
+//            Debug.LogWarning($"FlyToNavPoint navDuration:{navDuration} navStartPos:{navStartPos} navStartTime:{navStartTime} elapsedTime:{elapsedTime}");
             yield return null;
         } while (elapsedTime < navDuration);
         flying = false;
@@ -48,7 +48,7 @@ public class Ship : MonoBehaviour
         if (nextNavPointIdx + 1 < _navPointManager.NavPoints.Count) {
             ++nextNavPointIdx;
             nextNavPoint = _navPointManager.NavPoints[nextNavPointIdx];
-            Debug.LogWarning($"TryAdvanceNavPoint nextNavPointIdx:{nextNavPointIdx} nextNavPoint:{nextNavPoint}");
+//            Debug.LogWarning($"TryAdvanceNavPoint nextNavPointIdx:{nextNavPointIdx} nextNavPoint:{nextNavPoint}");
             StartCoroutine(FlyToNavPoint());
         } else {
             nextNavPoint = null;
