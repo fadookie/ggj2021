@@ -11,12 +11,14 @@ public class Ship : MonoBehaviour
     private Vector3 navStartPos;
     private float navStartTime;
     private bool flying;
+    private PlayerController player;
 
     public float Speed = 20;
     
     // Start is called before the first frame update
     void Start() {
         _navPointManager = Services.instance.Get<NavPointManager>();
+        player = Services.instance.Get<PlayerController>();
     }
 
     // Update is called once per frame
@@ -54,5 +56,10 @@ public class Ship : MonoBehaviour
             nextNavPoint = null;
             flying = false;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        Debug.LogWarning($"Ship OnTriggerEnter2D other:{other}");
+        player.Damage();
     }
 }

@@ -75,7 +75,7 @@ public class TempoManager : MonoBehaviour
         var lastAccuracy = Mathf.Abs(SourceTime - lastBeatTime);
         var nextAccuracy = Mathf.Abs(SourceTime - nextBeatTime);
         var closestAccuracy = Mathf.Min(lastAccuracy, nextAccuracy);
-        Debug.LogWarning($"getAccuracyTime: relativeBeat:{relativeBeat} currentBeat:{currentBeat} nextBeat:{nextBeat} lastBeatTime:{lastBeatTime} nextBeatTime:{nextBeatTime} sourceTime:{SourceTime} lastAccuracy:{lastAccuracy} nextAccuracy:{nextAccuracy} closestAccuracy:{closestAccuracy}");
+        Debug.Log($"getAccuracyTime: relativeBeat:{relativeBeat} currentBeat:{currentBeat} nextBeat:{nextBeat} lastBeatTime:{lastBeatTime} nextBeatTime:{nextBeatTime} sourceTime:{SourceTime} lastAccuracy:{lastAccuracy} nextAccuracy:{nextAccuracy} closestAccuracy:{closestAccuracy}");
         return closestAccuracy;
     }
 
