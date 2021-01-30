@@ -12,6 +12,7 @@ public class Ship : MonoBehaviour
     private float navStartTime;
     private bool flying;
     private PlayerController player;
+    public GameObject hitParticle;
 
     public float Speed = 20;
     
@@ -61,5 +62,6 @@ public class Ship : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other) {
         Debug.LogWarning($"Ship OnTriggerEnter2D other:{other}");
         player.Damage();
+        Instantiate(hitParticle, transform.position, Quaternion.identity);
     }
 }
