@@ -29,6 +29,9 @@ public class TempoManager : MonoBehaviour
     private int relativeBeat = 1; // Lord forgive me
     public IObservable<int> TotalBeats => totalBeats;
     public IObservable<TempoInfo> Tempo => tempo;
+    public int CurrentBeat => totalBeats.Value;
+    public int NextBeat => CurrentBeat + 1;
+    public float SourceTime => source.time;
 
     void Awake() {
         totalBeats = new BehaviorSubject<int>(0);
@@ -63,16 +66,31 @@ public class TempoManager : MonoBehaviour
         return res;
     }
     
-    public float percentElapsedToNextMeasure() {
-        var measureDelay = measuresPerMinuteToDelay(bpm, beatsPerMeasure);
-        var lastMeasureTime = measureDelay * (totalMeasures - 0);
-        var nextMeasureTime = measureDelay * (totalMeasures - 0 + 1);
-//        var numerator = (measureDelay * (_totalMeasures + 1) - source.time) - measureDelay;
-        var res = source.time - lastMeasureTime / nextMeasureTime - lastMeasureTime;
+    public float percentElapsedToBeat(float startTime, int beat) {
+        var beatTime = this.beatTime(beat);
+        var res = source.time - startTime / beatTime - startTime;
         if (source.time - _lastLogTime > 0.5f) {
-//                Debug.Log($"percentElapsedToNextMeasure totalMeasures:{totalMeasures.Value} delay:{measureDelay} time:{source.time} lastMeasure:{lastMeasureTime} nextMeasure:{nextMeasureTime} equation:{source.time - lastMeasureTime} / {nextMeasureTime - lastMeasureTime} = {res}");
+            Debug.Log($"percentElapsedToBeat startTime:{startTime} beat:{beat} beatTime:{beatTime} eq:{source.time - startTime} / {beatTime - startTime} = {res}");
             _lastLogTime = source.time;
         }
+        return res;
+    }
+
+    public float beatTime(int beat) {
+        var beatDelay = beatsPerMinuteToDelay(bpm);
+        return beatDelay * beat;
+    }
+    
+    public float percentElapsedToNextMeasure() {
+        var measureDelay = measuresPerMinuteToDelay(bpm, beatsPerMeasure);
+        var lastMeasureTime = measureDelay * totalMeasures;
+        var nextMeasureTime = measureDelay * (totalMeasures + 1);
+//        var numerator = (measureDelay * (_totalMeasures + 1) - source.time) - measureDelay;
+        var res = source.time - lastMeasureTime / nextMeasureTime - lastMeasureTime;
+//        if (source.time - _lastLogTime > 0.5f) {
+////                Debug.Log($"percentElapsedToNextMeasure totalMeasures:{totalMeasures.Value} delay:{measureDelay} time:{source.time} lastMeasure:{lastMeasureTime} nextMeasure:{nextMeasureTime} equation:{source.time - lastMeasureTime} / {nextMeasureTime - lastMeasureTime} = {res}");
+//            _lastLogTime = source.time;
+//        }
         return res;
     }
     

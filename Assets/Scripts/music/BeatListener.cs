@@ -36,6 +36,7 @@ namespace music
             if (info.RelativeBeat % 2 != 0) {
                 // Beats 1 & 3
                 PulseBeatIndicator();
+                Services.instance.Get<SpawnArea>().Spawn(info.TotalBeats + 2); // Try to spawn for 2 beats from now
             }
             Debug.Log($"BeatListener OnTempo info:{info}");
             prevTempoInfo = info;
