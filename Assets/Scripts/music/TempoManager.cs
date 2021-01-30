@@ -116,7 +116,7 @@ public class TempoManager : MonoBehaviour
 //        Debug.Log($"Tempo (totalBeats:{beats}) % {beatsPerMeasure} = {(totalBeats.Value) % beatsPerMeasure}");
         var totalBeatsOfCurrentMeasure = totalMeasures * beatsPerMeasure;
 //        var relativeBeat = beatsPerMeasure - (totalBeatsOfCurrentMeasure - beats);
-        Debug.Log($"Tempo measures:{totalMeasures}, eq: beatsPerMeasure:{beatsPerMeasure} - (totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} - beats:{beats}) = {relativeBeat}");
+//        Debug.Log($"Tempo measures:{totalMeasures}, eq: beatsPerMeasure:{beatsPerMeasure} - (totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} - beats:{beats}) = {relativeBeat}");
     //                Debug.Log($"Tempo beats:{beats} measures:{measures} totalBeatsOfCurrentMeasure:{totalBeatsOfCurrentMeasure} relativeBeat:{relativeBeat}");
         var newTempo = new TempoInfo { TotalBeats = beats, TotalMeasures = totalMeasures, RelativeBeat = relativeBeat };
         tempo.OnNext(newTempo);
