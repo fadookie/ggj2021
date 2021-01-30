@@ -26,7 +26,7 @@ public class TempoManager : MonoBehaviour
     private BehaviorSubject<int> totalBeats;
     private BehaviorSubject<TempoInfo> tempo;
     private int totalMeasures = -1; // Lord forgive me for this off-by-one error
-    private int relativeBeat = 1; // Lord forgive me
+    private int relativeBeat = 1;
     public IObservable<int> TotalBeats => totalBeats;
     public IObservable<TempoInfo> Tempo => tempo;
     public int CurrentBeat => totalBeats.Value;
