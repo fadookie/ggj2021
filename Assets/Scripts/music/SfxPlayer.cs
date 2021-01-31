@@ -9,6 +9,7 @@ public class SfxPlayer : MonoBehaviour
 {
     public AudioClip DamageSound;
     public AudioClip HealSound;
+    public AudioClip DeathSound;
 
     private AudioSource player;
 
@@ -16,14 +17,12 @@ public class SfxPlayer : MonoBehaviour
     {
         Damage,
         Heal,
+        Death,
     }
 
     void Awake() {
         Services.instance.Set(this);
         player = GetComponent<AudioSource>();
-    }
-
-    void Start() {
     }
 
     public void PlaySound(Sound sound) {
@@ -34,6 +33,9 @@ public class SfxPlayer : MonoBehaviour
                 break;
             case Sound.Heal:
                 PlayClip(HealSound);
+                break;
+            case Sound.Death:
+                PlayClip(DeathSound);
                 break;
             default:
                 throw new ArgumentException($"Unknown sound type: {sound}");

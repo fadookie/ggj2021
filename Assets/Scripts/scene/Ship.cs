@@ -123,6 +123,7 @@ public class Ship : MonoBehaviour
     IEnumerator Death() {
         isDying = true;
         SpawnParticleChild(explosionParticle);
+        Services.instance.Get<SfxPlayer>().PlaySound(SfxPlayer.Sound.Death);
         var deathStartTime = Time.time;
         do {
 //            var newRotation = transform.rotation.eulerAngles;

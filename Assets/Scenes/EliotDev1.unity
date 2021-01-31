@@ -1937,6 +1937,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1483818417630727764, guid: a985782c2557843969b033a8f713de01,
+        type: 3}
+      propertyPath: DeathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 134bfc2d5abde4031a7add3d2329273b, type: 3}
     - target: {fileID: 1483818417630727765, guid: a985782c2557843969b033a8f713de01,
         type: 3}
       propertyPath: m_RootOrder
