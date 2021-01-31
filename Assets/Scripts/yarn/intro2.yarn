@@ -38,6 +38,7 @@ Captain: I see you up here too often when your laboratory is two floors below th
 Dreamer: Well, okay~ I guess I'll cut my visit short today.
 Dreamer: Have a good day, Captain.
 Captain: ...You too.
+<<load_scene EliotDev1>>
 [[lab1]]
 ===
 title: lab1

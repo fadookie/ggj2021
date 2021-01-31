@@ -50,7 +50,7 @@ public class MusicController : MonoBehaviour {
 			Services.instance.Set(this);
 		}
 	}
-
+	
 	private void Start() {
 		musicEventStream.Subscribe(evt =>
 			Debug.LogWarning($"Pop event at s:{source.time} samples:{source.timeSamples}, popTimeSmp={evt.PopTime}, type={evt.type}")
