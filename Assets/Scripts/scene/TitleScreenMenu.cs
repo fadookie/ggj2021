@@ -9,4 +9,8 @@ public class TitleScreenMenu : MonoBehaviour
     public void startGame(){
         SceneManager.LoadScene("JonYarnTests");
     }
+    
+    public void startShipGame(){
+        SceneManager.LoadScene("EliotDev1");
+    }
 }
