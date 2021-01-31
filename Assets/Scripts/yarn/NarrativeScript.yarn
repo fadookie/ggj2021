@@ -153,7 +153,7 @@ position: 1922,63
 Captain: ... // for this line and for a couple lines in the conclusion, i think it'd be cool if we could replace the dreamer's icon w/ a static screen or something similar in the meantime
 Captain: I'll let the stars guide me.
 <<end_scene>>
-<<load_scene EliotDev1>> // then start the game
+<<load_scene ShipGame>> // then start the game
 ===
 
 title: ending
