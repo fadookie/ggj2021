@@ -93,7 +93,6 @@ public class CustomCommands : MonoBehaviour
     public void endCurrentScene(string[] parameters,System.Action onComplete){
           fadeToBlackElapsed = 0;
           fadeSceneIn = false;
-          fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, 1);
           StartCoroutine(fadeScene(onComplete));
     }
 
@@ -122,6 +121,7 @@ public class CustomCommands : MonoBehaviour
                 fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, speakerOneInitialAlpha * (1 - t)+1*t);
 
             }
+            Debug.Log("testing  ");
         }
 
         if(speakerOneElapsed <= speakerFadeTime){
