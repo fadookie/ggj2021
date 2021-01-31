@@ -20,6 +20,7 @@ public class Ship : MonoBehaviour
     private bool isDying = false;
     private bool isWinning = false;
     private Coroutine flyingRoutine;
+    private float lastFlyingAbortTime;
 
     public float Speed = 20;
     public float RotationSpeed = 2;
@@ -39,6 +40,20 @@ public class Ship : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        // Check if we fell off the left side
+        var leftSidePos = Camera.main.ScreenToWorldPoint(Vector3.zero);
+        Debug.LogWarning($"Ship posX:{transform.position.x} < leftSidePosX:{leftSidePos.x} = {transform.position.x < leftSidePos.x}");
+        if (transform.position.x < leftSidePos.x) {
+            var newPos = transform.position;
+            newPos.x = leftSidePos.x;
+            transform.position = newPos;
+            if (flying && Time.time - lastFlyingAbortTime < 0.25f) {
+                lastFlyingAbortTime = Time.time;
+                StopCoroutine(flyingRoutine);
+                flyingRoutine = StartCoroutine(FlyToNavPoint());
+            }
+        }
+        
         if (_navPointManager.NavPoints.Count <= 0) return;
 
         if (!flying) {
