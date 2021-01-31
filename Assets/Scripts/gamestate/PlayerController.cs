@@ -9,6 +9,8 @@ using UniRx;
 public class PlayerController : MonoBehaviour
 {
     private const int maxHealth = 100;
+    Subject<Unit> onHeal = new Subject<Unit>();
+    public IObservable<Unit> OnHeal => onHeal;
     public IntReactiveProperty health = new IntReactiveProperty(maxHealth);
     public Image healthBar;
     public GameObject failPanel;
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour
     public void Heal() {
         if (health.Value < maxHealth) {
             health.Value += 10;
+            onHeal.OnNext(Unit.Default);
         }
     }
 

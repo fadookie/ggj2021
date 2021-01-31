@@ -1,6 +1,7 @@
 ﻿using com.eliotlash.core.service;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
@@ -13,6 +14,7 @@ public class Ship : MonoBehaviour
     private bool flying;
     private PlayerController player;
     public GameObject hitParticle;
+    public GameObject healParticle;
     public GameObject explosionParticle;
     private bool isDying = false;
 
@@ -24,6 +26,7 @@ public class Ship : MonoBehaviour
     void Start() {
         _navPointManager = Services.instance.Get<NavPointManager>();
         player = Services.instance.Get<PlayerController>();
+        player.OnHeal.Subscribe(_ => SpawnParticleChild(healParticle)).AddTo(this);
     }
 
     // Update is called once per frame
@@ -84,8 +87,7 @@ public class Ship : MonoBehaviour
 
     IEnumerator Death() {
         isDying = true;
-        var explosionGo = Instantiate(explosionParticle, transform);
-        explosionGo.transform.localPosition = Vector3.zero;
+        SpawnParticleChild(explosionParticle);
         var deathStartTime = Time.time;
         do {
 //            var newRotation = transform.rotation.eulerAngles;
@@ -95,5 +97,10 @@ public class Ship : MonoBehaviour
         } while (Time.time - deathStartTime < 2);
         GetComponent<SpriteRenderer>().enabled = false;
         player.OnShipDeathFinished();
+    }
+
+    void SpawnParticleChild(GameObject prefab) {
+        var childGo = Instantiate(prefab, transform);
+        childGo.transform.localPosition = Vector3.zero;
     }
 }
