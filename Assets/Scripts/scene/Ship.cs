@@ -13,8 +13,11 @@ public class Ship : MonoBehaviour
     private bool flying;
     private PlayerController player;
     public GameObject hitParticle;
+    public GameObject explosionParticle;
+    private bool isDying = false;
 
     public float Speed = 20;
+    public float DeathSpinSpeed = 1;
     
     // Start is called before the first frame update
     void Start() {
@@ -61,7 +64,29 @@ public class Ship : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         Debug.LogWarning($"Ship OnTriggerEnter2D other:{other}");
+        if (isDying) return;
+        Services.instance.Get<SfxPlayer>().PlaySound(SfxPlayer.Sound.Damage);
         player.Damage();
-        Instantiate(hitParticle, transform.position, Quaternion.identity);
+        if (player.health.Value <= 0) {
+            StartCoroutine(Death());
+        } else {
+            // Hit obstacle
+            Instantiate(hitParticle, transform.position, Quaternion.identity);
+        }
+    }
+
+    IEnumerator Death() {
+        isDying = true;
+        var explosionGo = Instantiate(explosionParticle, transform);
+        explosionGo.transform.localPosition = Vector3.zero;
+        var deathStartTime = Time.time;
+        do {
+//            var newRotation = transform.rotation.eulerAngles;
+//            newRotation.z += DeathSpinSpeed * Time.deltaTime;
+            transform.Rotate(new Vector3(0, 0, DeathSpinSpeed * Time.deltaTime));
+            yield return null;
+        } while (Time.time - deathStartTime < 2);
+        GetComponent<SpriteRenderer>().enabled = false;
+        player.OnShipDeathFinished();
     }
 }

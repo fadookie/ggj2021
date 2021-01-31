@@ -46,5 +46,9 @@ namespace com.eliotlash.core.service {
 			}
 			return ret;
 		}
+
+		public void Clear() {
+			services.Clear();
+		}
 	}
 }
