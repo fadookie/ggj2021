@@ -1,6 +1,7 @@
 ﻿using com.eliotlash.core.service;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
@@ -13,16 +14,19 @@ public class Ship : MonoBehaviour
     private bool flying;
     private PlayerController player;
     public GameObject hitParticle;
+    public GameObject healParticle;
     public GameObject explosionParticle;
     private bool isDying = false;
 
     public float Speed = 20;
+    public float RotationSpeed = 2;
     public float DeathSpinSpeed = 1;
     
     // Start is called before the first frame update
     void Start() {
         _navPointManager = Services.instance.Get<NavPointManager>();
         player = Services.instance.Get<PlayerController>();
+        player.OnHeal.Subscribe(_ => SpawnParticleChild(healParticle)).AddTo(this);
     }
 
     // Update is called once per frame
@@ -41,9 +45,15 @@ public class Ship : MonoBehaviour
         navStartTime = Time.time;
         var navDuration = Vector3.Distance(navStartPos, nextNavPoint.transform.position) / Speed;
         float elapsedTime;
+        
+        var vectorToTarget = nextNavPoint.transform.position - transform.position;
+        var targetAngle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90; // Sprite is pointing up so offset angle by 90 degrees
+        var targetRotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
+        
         do {
             elapsedTime = Time.time - navStartTime;
-            transform.position = Vector3.Lerp(navStartPos, nextNavPoint.transform.position, elapsedTime / navDuration);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * RotationSpeed);
+            transform.position = Vector3.Lerp(navStartPos, nextNavPoint.transform.position, Easing.Sinusoidal.InOut(elapsedTime / navDuration));
 //            Debug.LogWarning($"FlyToNavPoint navDuration:{navDuration} navStartPos:{navStartPos} navStartTime:{navStartTime} elapsedTime:{elapsedTime}");
             yield return null;
         } while (elapsedTime < navDuration);
@@ -77,8 +87,7 @@ public class Ship : MonoBehaviour
 
     IEnumerator Death() {
         isDying = true;
-        var explosionGo = Instantiate(explosionParticle, transform);
-        explosionGo.transform.localPosition = Vector3.zero;
+        SpawnParticleChild(explosionParticle);
         var deathStartTime = Time.time;
         do {
 //            var newRotation = transform.rotation.eulerAngles;
@@ -88,5 +97,10 @@ public class Ship : MonoBehaviour
         } while (Time.time - deathStartTime < 2);
         GetComponent<SpriteRenderer>().enabled = false;
         player.OnShipDeathFinished();
+    }
+
+    void SpawnParticleChild(GameObject prefab) {
+        var childGo = Instantiate(prefab, transform);
+        childGo.transform.localPosition = Vector3.zero;
     }
 }

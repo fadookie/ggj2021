@@ -8,7 +8,9 @@ using UniRx;
 
 public class PlayerController : MonoBehaviour
 {
-    private const int maxHealth = 10;
+    private const int maxHealth = 100;
+    Subject<Unit> onHeal = new Subject<Unit>();
+    public IObservable<Unit> OnHeal => onHeal;
     public IntReactiveProperty health = new IntReactiveProperty(maxHealth);
     public Image healthBar;
     public GameObject failPanel;
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning($"health change to {health} pct:{newHealth / (float)maxHealth}");
             healthBar.fillAmount = newHealth / (float)maxHealth;
         }).AddTo(this);
+        Services.instance.Get<InputController>().MouseClicks.Subscribe(OnClick).AddTo(this);
     }
 
     public void Damage() {
@@ -38,6 +41,8 @@ public class PlayerController : MonoBehaviour
     public void Heal() {
         if (health.Value < maxHealth) {
             health.Value += 10;
+            onHeal.OnNext(Unit.Default);
+            Services.instance.Get<SfxPlayer>().PlaySound(SfxPlayer.Sound.Heal);
         }
     }
 
@@ -45,9 +50,10 @@ public class PlayerController : MonoBehaviour
         failPanel.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void OnClick(Vector3 mousePos) {
+        var accuracy = Services.instance.Get<TempoManager>().getAccuracy();
+        if (accuracy == TempoManager.Accuracy.Great) {
+            Heal();
+        }
     }
 }
