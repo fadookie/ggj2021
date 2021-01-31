@@ -96,8 +96,8 @@ public class Ship : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.LogWarning($"Ship OnTriggerEnter2D other:{other}");
-        if (isDying || isWinning) return;
+        if (isDying || isWinning || other.gameObject.name.Equals("BeatIndicator")) return;
+        Debug.LogWarning($"Ship OnTriggerEnter2D other:{other.gameObject.name}");
         Services.instance.Get<SfxPlayer>().PlaySound(SfxPlayer.Sound.Damage);
         player.Damage();
         if (player.health.Value <= 0) {

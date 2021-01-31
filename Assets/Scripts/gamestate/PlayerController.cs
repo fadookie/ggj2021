@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
         Debug.LogWarning($"Set healh to {health.Value} max:{maxHealth}");
         
         health.Subscribe(newHealth => {
-            Debug.LogWarning($"health change to {health} pct:{newHealth / (float)maxHealth}");
+//            Debug.LogWarning($"health change to {health} pct:{newHealth / (float)maxHealth}");
             healthBar.fillAmount = newHealth / (float)maxHealth;
         }).AddTo(this);
         Services.instance.Get<InputController>().MouseClicks.Subscribe(OnClick).AddTo(this);

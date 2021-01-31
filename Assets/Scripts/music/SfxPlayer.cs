@@ -27,7 +27,7 @@ public class SfxPlayer : MonoBehaviour
     }
 
     public void PlaySound(Sound sound) {
-        Debug.LogWarning($"PlaySound: {sound}");
+//        Debug.LogWarning($"PlaySound: {sound}");
         switch (sound) {
             case Sound.Damage:
                 PlayClip(DamageSound);

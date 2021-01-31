@@ -14,10 +14,10 @@ public class MusicController : MonoBehaviour {
 	}
 
 	public class MusicEvent {
-		public int popTimeSmp;
+		public float PopTime;
 		public MusicEventType type;
-		public MusicEvent(int popTimeSmp, MusicEventType type) {
-			this.popTimeSmp = popTimeSmp;
+		public MusicEvent(float popTime, MusicEventType type) {
+			PopTime = popTime;
 			this.type = type;
 		}
 	}
@@ -28,15 +28,15 @@ public class MusicController : MonoBehaviour {
 	public List<MusicEvent> events = new List<MusicEvent> {
 		new MusicEvent(0, MusicEventType.Start),
 		
-		/*
 		// Real song
-		new MusicEvent(4498026, MusicEventType.Outtro),
-		new MusicEvent(4695018, MusicEventType.Blastoff),
-		*/
+		new MusicEvent(98.182f, MusicEventType.Outtro),
+		new MusicEvent(106.364f, MusicEventType.Blastoff),
 		
+		/*
 		// Click Track
 		new MusicEvent(1058400, MusicEventType.Outtro),
 		new MusicEvent(1234800, MusicEventType.Blastoff),
+		*/
 	};
 
 	List<MusicEvent> popped = new List<MusicEvent>(3);
@@ -53,7 +53,7 @@ public class MusicController : MonoBehaviour {
 
 	private void Start() {
 		musicEventStream.Subscribe(evt =>
-			Debug.LogWarning($"Pop event at {source.timeSamples}, popTimeSmp={evt.popTimeSmp}, type={evt.type}")
+			Debug.LogWarning($"Pop event at s:{source.time} samples:{source.timeSamples}, popTimeSmp={evt.PopTime}, type={evt.type}")
 		)
 		.AddTo(this);
 	}
@@ -61,7 +61,7 @@ public class MusicController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		foreach(MusicEvent mEvent in events) {
-			if (source.timeSamples >= mEvent.popTimeSmp) {
+			if (source.time >= mEvent.PopTime) {
 				musicEventStream.OnNext(mEvent);
 				popped.Add(mEvent);
 			}
@@ -73,7 +73,7 @@ public class MusicController : MonoBehaviour {
 		popped.Clear();
 
 		if (!endPopped && !source.isPlaying) {
-			musicEventStream.OnNext(new MusicEvent(source.timeSamples, MusicEventType.End));
+			musicEventStream.OnNext(new MusicEvent(source.time, MusicEventType.End));
 			endPopped = true;
 		}
 	}
