@@ -10,8 +10,11 @@ public class SfxPlayer : MonoBehaviour
     public AudioClip DamageSound;
     public AudioClip HealSound;
     public AudioClip DeathSound;
+    public AudioClip DialogueAdvance;
+    public AudioClip DialogueLineUpdate;
 
     private AudioSource player;
+    private Subject<Unit> dialogueLineUpdate = new Subject<Unit>();
 
     public enum Sound
     {
@@ -23,6 +26,10 @@ public class SfxPlayer : MonoBehaviour
     void Awake() {
         Services.instance.Set(this);
         player = GetComponent<AudioSource>();
+        dialogueLineUpdate
+            .ThrottleFirst(new TimeSpan(TimeSpan.TicksPerSecond / 15))
+            .Subscribe(_ => PlayClip(DialogueLineUpdate))
+            .AddTo(this);
     }
 
     public void PlaySound(Sound sound) {
@@ -44,5 +51,13 @@ public class SfxPlayer : MonoBehaviour
 
     private void PlayClip(AudioClip clip) {
         player.PlayOneShot(clip);
+    }
+
+    public void OnDialogueLineUpdate() {
+        dialogueLineUpdate.OnNext(Unit.Default);
+    }
+
+    public void OnDialogueAdvance() {
+        PlayClip(DialogueAdvance);
     }
 }
