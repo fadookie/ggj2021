@@ -24,12 +24,19 @@ public class SfxPlayer : MonoBehaviour
     }
 
     void Awake() {
+        if (Services.instance.Get<SfxPlayer>() != null) {
+            gameObject.SetActive(false);
+            Destroy(this);
+            return;
+        }
+        
         Services.instance.Set(this);
         player = GetComponent<AudioSource>();
         dialogueLineUpdate
             .ThrottleFirst(new TimeSpan(TimeSpan.TicksPerSecond / 15))
             .Subscribe(_ => PlayClip(DialogueLineUpdate))
             .AddTo(this);
+        DontDestroyOnLoad(this);
     }
 
     public void PlaySound(Sound sound) {
