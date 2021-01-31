@@ -5,7 +5,7 @@ using UnityEngine;
 // Field ... is never assigned to and will always have its default value null
 #pragma warning disable 0649
 
-public class NodeVisitedTracker : MonoBehaviour
+public class ExternalLibrary : MonoBehaviour
 {
 
     // The dialogue runner that we want to attach the 'visited' function to
