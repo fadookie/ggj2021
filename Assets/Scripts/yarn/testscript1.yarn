@@ -3,8 +3,15 @@ tags:
 colorID: 3
 position: 381,61
 ---
+<<wait 0>>
+<<speaker1 spacegirl>>
+<<setname Jonathania>>
 Hello you are cool
+<<setname \s>>
+<<speaker1 none>>
 -> I am?
+    <<speaker1 spacegirl>>
+    <<setname Jonathania>>
     Yes!
 -> Ofcourse I am
 [[SecondNode]]
@@ -14,9 +21,17 @@ tags:
 colorID: 0
 position: 73,311
 ---
+    <<speaker1 spacegirl>>
+    <<setname Jonathania>>
 Some other text
+    <<setname \s>>
+    <<speaker1 none>>
 -> Some option
+    <<speaker1 spacegirl>>
+    <<setname Jonathania>>
     ok then
 -> Some other option?
+    <<speaker1 spacegirl>>
+    <<setname Jonathania>>
     this is some other option woooooohooo
 ===
