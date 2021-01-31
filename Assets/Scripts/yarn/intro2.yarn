@@ -1,0 +1,124 @@
+title: intro
+tags: intro
+colorID: 8
+position: 252,59
+---
+<<wait 0>>
+<<setlocation unknown>>
+<<setdate unknown>>
+Dreamer: ★ I always felt like the stars were a miracle — didn't you? // don't show character pic for this line
+<<setlocation bridge>> // no clue how to setup variables w/ yarn or where they go, but i can plug them in once you get it working LOL
+<<setdate date1>>
+Dreamer: ★ Wasn't the wonder of it all what made you want to do this in the first place? // maybe take out the nameplate out of each line if we can get the colors working right. for ref, "Dreamer" = purple and "Captain" = green
+Captain: ☀ Hm? I'm good at what I do, and I like finding the right answers.
+Dreamer: ★ But don't you think it's cool? // stopped symbols here just in case we can't get it to work with the font; i can do the tedious work of putting it back in if you do get it working
+Dreamer: The space travel...
+Dreamer: ...and the idea that we can find something out there that's bigger than all of us.
+Captain: That's... a rather subjective question.
+Captain: Isn't your research more interesting?
+Dreamer: I love my research! 
+Dreamer: But doesn't this line of thinking make your world a little wider?
+Captain: I... don't know.
+Dreamer: Well... I'd love to help you broaden your horizons, Captain.
+[[bridge1]]
+===
+title: bridge1
+tags: 
+colorID: 0
+position: 505,64
+---
+<<setlocation bridge>>
+<<setdate date2>> 
+Captain: You're here again.
+Dreamer: You say that like you're not happy to see me~
+Captain: Are you getting your work done?
+Dreamer: Of course. Don't you trust me?
+Captain: Not particularly, no. 
+Captain: I see you up here too often when your laboratory is two floors below the deck.
+Dreamer: Well, okay~ I guess I'll cut my visit short today.
+Dreamer: Have a good day, Captain.
+Captain: ...You too.
+[[lab1]]
+===
+title: lab1
+tags: 
+colorID: 0
+position: 774,53
+---
+<<setlocation lab>>
+<<setdate date3>>
+Captain: (I've never seen her this... focused.)
+Dreamer: Oh, Captain! Welcome to my lab!
+Dreamer: Did you miss me~? Is that why you came to visit~?
+Captain: No, I just... wanted a status report. On your latest breakthrough.
+Dreamer: Aw~ you're no fun. But aye-aye, Captain!
+Dreamer: So, these models indicate that we...
+[[bridge2]]
+===
+title: bridge2
+tags: 
+colorID: 0
+position: 1073,70
+---
+<<setlocation bridge>>
+<<setdate date4>> Captain	(A... blanket? Who...?)
+Dreamer: Captain~ You should get some rest.
+Captain	You're one to talk.
+Dreamer: I came here to look at the stars~ Is that so wrong?
+Captain	Not at all. But you should get some rest, too.
+Dreamer: I'm not tired yet. Can't I keep you company?
+Captain: ...
+Captain: I suppose I can't stop you.
+Dreamer: Yay~ Then, tell me everything you know about the stars!
+Captain	You're a researcher. I imagine you have a wealth of knowledge already.
+Dreamer: Sure, but... I want to hear it from you.
+Dreamer: I like your voice.
+Captain	...
+Dreamer: Well, if you don't want to, then—
+Captain: I suppose I can do that for you.
+[[lab2]]
+===
+title: lab2
+tags: 
+colorID: 0
+position: 1353,72
+---
+<<setlocation lab>>
+<<setdate date5>> 
+Dreamer: Captain?
+Captain: Yes?
+Dreamer:	We've been working together for almost a year now, right?
+Captain:	Yes.
+Dreamer: Then, why don't we try something a little different.
+Dreamer: I... want to get to know you a little better.
+Captain: Okay.
+Dreamer: I... didn't expect you to say yes so easily.
+Captain: You said you wanted to get to know me. That's what I agreed to, doctor.
+Captain: But...
+Captain: I suppose I would not mind if things go the way you hope them to.
+[[lab3]]
+===
+title: lab3
+tags: 
+colorID: 0
+position: 1618,66
+---
+<<setlocation lab>>
+<<setdate date6>>
+Dreamer: Captain, get in here! I've discovered something absolutely amazing!
+Captain:Get away from there! It's dangerous!
+Dreamer: I told you, Captain— the stars are a miracle! Don't you find it wondrous?
+Dreamer: (A flash of white/red, then fade to black?)
+[[stars]]
+===
+title: stars
+tags: 
+colorID: 0
+position: 1922,63
+---
+<<setlocation stars>>
+<<setdate date7>> 
+Captain: ... // for this line and for a couple lines in the conclusion, i think it'd be cool if we could replace the dreamer's icon w/ a static screen or something similar in the meantime
+Captain: I'll let the stars guide me.
+// then start the game
+===

@@ -19,16 +19,31 @@ public class CustomCommands : MonoBehaviour
         public Sprite sprite;
     }
 
+    // sprites used for speaker commands
     public SpriteInfo[] sprites;
+    
     public Image speaker1;
     public Image speaker2;
 
+    public string[] dates;
+
     public DialogueRunner runner;
 
-    public TMP_Text name;
+    // text object used for speaker name
+    public TMP_Text textName;
+
+    // text object used for the date
+    public TMP_Text textDate;
+
+    // text object used for the location
+    public TMP_Text textLocation;
+
+    
 
     public void Start(){
 
+        runner.AddCommandHandler("setdate",setDate);
+        runner.AddCommandHandler("setlocation",setLocation);
         runner.AddCommandHandler("setname",setName);
         runner.AddCommandHandler("speaker1",setSpeaker1);
         runner.AddCommandHandler("speaker2",setSpeaker2);
@@ -44,7 +59,25 @@ public class CustomCommands : MonoBehaviour
     }
 
     public void setName(string[] parameters){
-        this.name.text = parameters[0].Equals("\\s") ? " ":parameters[0];
+        this.textName.text = parameters[0].Equals("\\s") ? " ":parameters[0];
+    }
+
+    public void setLocation(string[] parameters){
+        this.textLocation.text = parameters[0].Substring(0,1).ToUpper() + parameters[0].Substring(1);
+    }
+
+    public void setDate(string[] parameters){
+        
+        string num = parameters[0].Substring(4);
+        Debug.Log("number is " + num);
+        int index = -1; 
+        if(!int.TryParse(num,out index)){
+            index = 0; // unknown
+        }
+        if(index >= 0 && index < dates.Length)
+            textDate.text = dates[index];
+        else
+            textDate.text = "unknown";
     }
 
     public void setSpeakerImage(int speaker,string spriteName){

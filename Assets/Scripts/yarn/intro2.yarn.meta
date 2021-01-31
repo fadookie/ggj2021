@@ -1,0 +1,77 @@
+fileFormatVersion: 2
+guid: 22dd48b6283b0304695b14278e68b216
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 94073015eacc34c1d8fc6786e43d60ca, type: 3}
+  baseLanguageID: en-US
+  stringIDs:
+  - intro2-intro-0
+  - intro2-intro-1
+  - intro2-intro-2
+  - intro2-intro-3
+  - intro2-intro-4
+  - intro2-intro-5
+  - intro2-intro-6
+  - intro2-intro-7
+  - intro2-intro-8
+  - intro2-intro-9
+  - intro2-intro-10
+  - intro2-intro-11
+  - intro2-bridge1-12
+  - intro2-bridge1-13
+  - intro2-bridge1-14
+  - intro2-bridge1-15
+  - intro2-bridge1-16
+  - intro2-bridge1-17
+  - intro2-bridge1-18
+  - intro2-bridge1-19
+  - intro2-bridge1-20
+  - intro2-lab1-21
+  - intro2-lab1-22
+  - intro2-lab1-23
+  - intro2-lab1-24
+  - intro2-lab1-25
+  - intro2-lab1-26
+  - intro2-bridge2-27
+  - intro2-bridge2-28
+  - intro2-bridge2-29
+  - intro2-bridge2-30
+  - intro2-bridge2-31
+  - intro2-bridge2-32
+  - intro2-bridge2-33
+  - intro2-bridge2-34
+  - intro2-bridge2-35
+  - intro2-bridge2-36
+  - intro2-bridge2-37
+  - intro2-bridge2-38
+  - intro2-bridge2-39
+  - intro2-bridge2-40
+  - intro2-bridge2-41
+  - intro2-lab2-42
+  - intro2-lab2-43
+  - intro2-lab2-44
+  - intro2-lab2-45
+  - intro2-lab2-46
+  - intro2-lab2-47
+  - intro2-lab2-48
+  - intro2-lab2-49
+  - intro2-lab2-50
+  - intro2-lab2-51
+  - intro2-lab2-52
+  - intro2-lab3-53
+  - intro2-lab3-54
+  - intro2-lab3-55
+  - intro2-lab3-56
+  - intro2-stars-57
+  - intro2-stars-58
+  compilationStatus: 1
+  isSuccesfullyCompiled: 1
+  compilationErrorMessage: 
+  baseLanguage: {fileID: 7128917941130120860, guid: 22dd48b6283b0304695b14278e68b216,
+    type: 3}
+  localizations: []
