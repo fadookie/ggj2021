@@ -63,6 +63,10 @@ public class CustomCommands : MonoBehaviour
 
     public void Start(){
 
+        //defaults
+        speaker1.sprite = sprites[0].sprite;
+        speaker2.sprite = sprites[1].sprite;
+
         runner.AddCommandHandler("start_scene",startCurrentScene);  // fade scene in from black
         runner.AddCommandHandler("end_scene",endCurrentScene);      //fade scene to black
         runner.AddCommandHandler("assign",assignSpeaker);           // assign a name to a speaker role ex: <<assign speaker1 Dreamer>>

@@ -1,0 +1,205 @@
+title: intro
+tags: intro
+colorID: 8
+position: 252,59
+---
+<<wait 0>>
+// bg should be set to black or just no speakers here. but if not, I can just rework this beginning dialogue. 
+<<setlocation Unknown>>
+<<setdate Unknown>>
+// then we open up whatever background we're using here
+<<start_scene>>
+Dreamer: I always felt like the stars were a miracle — didn't you? // don't show character pic for this line
+<<setlocation Starship_Bridge>>
+<<setdate June_2111>> 
+<<fadein speaker1>>
+Dreamer: Wasn't the wonder of it all what made you want to do this in the first place? 
+<<fadein speaker2>>
+Captain: Hm? I'm good at what I do, and I like finding the right answers.
+Dreamer: But don't you think it's cool? 
+Dreamer: The space travel...
+Dreamer: ...and the idea that we can find something out there that's bigger than all of us.
+Captain: That's... a rather subjective question.
+Captain: Isn't your research more interesting?
+Dreamer: I love my research! 
+Dreamer: But doesn't this line of thinking make your world a little wider?
+Captain: I... don't know.
+Dreamer: Well... I'd love to help you broaden your horizons, Captain.
+<<end_scene>>
+<<fadeout speaker1>>
+[[bridge1]]
+===
+
+title: bridge1
+tags: 
+colorID: 0
+position: 505,64
+---
+<<setlocation Starship_Bridge>>
+<<setdate July_2111>> 
+<<start_scene>>
+Captain: Doctor. You're here again.
+<<fadein speaker1>>
+Dreamer: You say that like you're not happy to see me~
+Captain: Are you getting your work done?
+Dreamer: Of course. Don't you trust me?
+Captain: Not particularly, no. 
+Captain: I see you up here too often when your laboratory is two floors below the deck.
+Dreamer: Well, okay~ I guess I'll cut my visit short today.
+Dreamer: Have a good day, Captain.
+<<fadeout speaker1>>
+Captain: ...You too.
+<<end_scene>>
+[[lab1]]
+===
+
+title: lab1
+tags: 
+colorID: 0
+position: 774,53
+---
+<<setlocation Starship_Laboratory>>
+<<setdate September_2111>>
+<<start_scene>>
+Captain: (I've never seen her this... focused.)
+<<fadein speaker1>>
+Dreamer: Oh, Captain! Welcome to my lab!
+Dreamer: Did you miss me~? Is that why you came to visit~?
+Captain: No, I just... wanted a status report. On your latest breakthrough.
+Dreamer: Aw~ you're no fun. But aye-aye, Captain!
+Dreamer: So, these models indicate that we...
+<<end_scene>>
+<<fadeout speaker1>>
+[[bridge2]]
+===
+
+title: bridge2
+tags: 
+colorID: 0
+position: 1073,70
+---
+<<setlocation Starship_Bridge>>
+<<setdate February_2112>> 
+<<start_scene>>
+Captain: (A... blanket? Who...?)
+<<fadein speaker1>>
+Dreamer: Captain~ You should get some rest.
+Captain: You're one to talk.
+Dreamer: I came here to look at the stars~ Is that so wrong?
+Captain: Not at all. But you should get some rest, too.
+Dreamer: I'm not tired yet. Can't I keep you company?
+Captain: ...
+Captain: I suppose I can't stop you.
+Dreamer: Yay~ Then, tell me everything you know about the stars!
+Captain: You're a researcher. I imagine you have a wealth of knowledge already.
+Dreamer: Sure, but... I want to hear it from you.
+Dreamer: I like your voice.
+Captain: ...
+Dreamer: Well, if you don't want to, then—
+Captain: I suppose I can do that for you.
+<<end_scene>>
+[[bridge3]]
+===
+
+title: bridge3
+tags: 
+colorID: 0
+position: 1353,72
+---
+<<setlocation Starship_Bridge>> // Changed this node from "lab2" to "bridge3" and updated the jump from bridge2. noted just in case it breaks something
+<<setdate May_2112>> 
+<<start_scene>>
+Dreamer: Captain?
+Captain: Yes?
+Dreamer: We've been working together for almost a year now, right?
+Captain: Yes.
+Dreamer: Then, why don't we try something a little different?
+Dreamer: I... want to get to know you a little better.
+Captain: Okay.
+Dreamer: I... didn't expect you to say yes so easily.
+Captain: You said you wanted to get to know me. That's what I agreed to, doctor.
+Captain: But...
+Captain: I suppose I would not mind if things go the way you hope them to.
+<<end_scene>>
+<<fadeout speaker2>>
+[[lab3]]
+===
+
+title: lab3
+tags: 
+colorID: 0
+position: 1618,66
+---
+<<setlocation Starship_Laboratory>>
+<<setdate December_2112>>
+<<start_scene>>
+Dreamer: Captain, get in here! I've discovered something absolutely amazing!
+<<fadein speaker2>>
+Captain:Get away from there! It's dangerous!
+Dreamer: I told you, Captain— the stars are a miracle! Don't you find it wondrous?
+<<fadeout speaker1>>
+<<end_scene>>
+[[stars]]
+===
+
+title: stars
+tags: 
+colorID: 0
+position: 1922,63
+---
+<<setlocation Somewhere_In_Space>>
+<<setdate December_2120>> 
+<<start_scene>>
+Captain: ... // for this line and for a couple lines in the conclusion, i think it'd be cool if we could replace the dreamer's icon w/ a static screen or something similar in the meantime
+Captain: I'll let the stars guide me.
+<<end_scene>>
+<<load_scene EliotDev1>> // then start the game
+===
+
+title: ending
+tags:
+colorID: 0
+position:
+---
+<<setlocation Mysterious_Dreamlike_Planet>>
+<<setdate December_2120>>
+<<start_scene>>
+Captain: ...
+Captain: (It's so quiet here.)
+Captain: ...
+Captain: ...
+Captain: ...
+Captain: (This can't be the place. There's no life here...) 
+<<fadein speaker1>>
+Dreamer: Captain? 
+Captain: (What... ? She's like a shadow. I can barely see her through the mist....)
+Captain: ...
+Dreamer: Captain? Is that really you? 
+Captain: ...
+Captain: (Oh.)
+Dreamer: Hey~ Don't leave a girl hanging. 
+Captain: ...
+Dreamer: Are you okay?
+Captain: ...
+Dreamer: ...I missed you.
+Captain: Doctor...
+Captain: I can't believe I found you.
+Dreamer: Well, I'm here, and... you're here. I think?
+Captain: I'm here. I've been searching for you. Ever since the accident. 
+Dreamer: I kept dreaming I woke up back on the ship, but...
+Dreamer: How long have you been traveling?
+Captain: Nine years, not counting cryosleep. 
+Dreamer: Oh... That's how long I've... that you've... 
+Dreamer: Huh. 
+Dreamer: Pretty crazy, don't you think~?
+Captain: ...
+Captain: I didn't think I'd find you. 
+Dreamer: Oh...
+Captain: ...
+Captain: It's really you...
+Dreamer: Don't cry, love. It really <i>is</i> me~
+Dreamer: The stars led you here. 
+Captain: Yes... like some kind of miracle. // then we have the ending screen
+<<end_scene>>
+<<load_scene EndScene>>
+===
