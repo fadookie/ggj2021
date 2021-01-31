@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1502217538869636044}
   - component: {fileID: 2477769170159133552}
   - component: {fileID: 6773218291077510546}
+  - component: {fileID: 1293276571}
   m_Layer: 0
-  m_Name: Moon
+  m_Name: Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,3 +99,21 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.6
+--- !u!114 &1293276571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1511430096472566705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8f211b58de6248aa9d1c8b593a13c47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PossibleSprites:
+  - {fileID: 21300000, guid: db672459bf83a41b6b899b74f09ae11c, type: 3}
+  - {fileID: 21300000, guid: 7c08815c949214135a4b926aea186fcd, type: 3}
+  - {fileID: 21300000, guid: 9d5b14867a855474c8adc3baf705477d, type: 3}
+  - {fileID: 21300000, guid: c609031cb05e94a809e9eda11e2a2cfc, type: 3}
+  - {fileID: 21300000, guid: 786b46361b4344a2a8b7ecf844dbe4fc, type: 3}
