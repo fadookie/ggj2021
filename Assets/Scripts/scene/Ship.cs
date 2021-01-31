@@ -50,7 +50,7 @@ public class Ship : MonoBehaviour
         do {
             elapsedTime = Time.time - navStartTime;
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * RotationSpeed);
-            transform.position = Vector3.Lerp(navStartPos, nextNavPoint.transform.position, elapsedTime / navDuration);
+            transform.position = Vector3.Lerp(navStartPos, nextNavPoint.transform.position, Easing.Sinusoidal.InOut(elapsedTime / navDuration));
 //            Debug.LogWarning($"FlyToNavPoint navDuration:{navDuration} navStartPos:{navStartPos} navStartTime:{navStartTime} elapsedTime:{elapsedTime}");
             yield return null;
         } while (elapsedTime < navDuration);
