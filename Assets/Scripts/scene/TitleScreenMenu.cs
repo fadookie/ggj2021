@@ -13,4 +13,12 @@ public class TitleScreenMenu : MonoBehaviour
     public void startShipGame(){
         SceneManager.LoadScene("EliotDev1");
     }
+    public void mainMenu()
+    {
+        SceneManager.LoadScene("TitleScreen");
+    }
+    public void quit()
+    {
+        Application.Quit();
+    }
 }

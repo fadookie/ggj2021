@@ -46,6 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DamageSound: {fileID: 8300000, guid: 0f5862c6d20da4803b7a6263568c6b72, type: 3}
   HealSound: {fileID: 8300000, guid: 9d0758cb3a2454196bcb82d4c47f8a1f, type: 3}
+  DeathSound: {fileID: 8300000, guid: 134bfc2d5abde4031a7add3d2329273b, type: 3}
+  DialogueAdvance: {fileID: 8300000, guid: ed5ed770bea2f44f5acd3f122315e1c1, type: 3}
+  DialogueLineUpdate: {fileID: 8300000, guid: bce4d2f29447449ae9921ac3c61082d0, type: 3}
 --- !u!82 &1483818417630727762
 AudioSource:
   m_ObjectHideFlags: 0

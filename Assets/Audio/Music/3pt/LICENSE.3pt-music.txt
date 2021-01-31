@@ -1,0 +1,5 @@
+The music in this directory is Copyright by The Wren Project.
+It is provided to Starcrossed Sonata under a license that it may be distributed with copies of the game,
+but may NOT be modified, sold, or distributed under any other circumstance.
+
+It is NOT licensed under a creative commons license.
