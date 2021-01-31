@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning($"health change to {health} pct:{newHealth / (float)maxHealth}");
             healthBar.fillAmount = newHealth / (float)maxHealth;
         }).AddTo(this);
+        Services.instance.Get<InputController>().MouseClicks.Subscribe(OnClick).AddTo(this);
     }
 
     public void Damage() {
@@ -45,9 +46,10 @@ public class PlayerController : MonoBehaviour
         failPanel.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void OnClick(Vector3 mousePos) {
+        var accuracy = Services.instance.Get<TempoManager>().getAccuracy();
+        if (accuracy == TempoManager.Accuracy.Great) {
+            Heal();
+        }
     }
 }

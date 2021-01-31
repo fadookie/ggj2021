@@ -1,6 +1,8 @@
 ﻿using com.eliotlash.core.service;
 using System.Collections;
 using System.Collections.Generic;
+using Antlr4.Runtime;
+using UniRx;
 using UnityEngine;
 
 public class NavPointManager : MonoBehaviour
@@ -17,18 +19,11 @@ public class NavPointManager : MonoBehaviour
     }
     
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Start() {
+        Services.instance.Get<InputController>().MouseClicks.Subscribe(AddNavPoint).AddTo(this);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private GameObject spawnPrefabAt(Vector2 position)
+    private GameObject spawnPrefabAt(Vector3 position)
     {
         var obj = Instantiate(Prefab);
 		obj.transform.parent = transform;
@@ -38,7 +33,7 @@ public class NavPointManager : MonoBehaviour
     }
 
 
-    public void AddNavPoint(Vector2 position) {
+    public void AddNavPoint(Vector3 position) {
         var go = spawnPrefabAt(position);
         navPoints.Add(go);
         lineRenderer.positionCount = navPoints.Count;
