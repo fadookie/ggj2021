@@ -1,27 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using com.eliotlash.core.service;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class NavStar : MonoBehaviour
 {
-    public Sprite[] Star1 = new Sprite[4];
-    public Sprite[] Star2 = new Sprite[4];
-    public Sprite[] Star3 = new Sprite[4];
-//    public Sprite[] Star4 = new Sprite[4]; // I accidentally forgot to put sprites here and don't have time to fix the numbering now
-    public Sprite[] Star5 = new Sprite[4];
-    public Sprite[] Star6 = new Sprite[4];
-    public Sprite[] Star7 = new Sprite[4];
-    public Sprite[] Star8 = new Sprite[4];
-    public Sprite[] Star9 = new Sprite[4];
-    public Sprite[] Star10 = new Sprite[4];
-    public Sprite[] Star11 = new Sprite[4];
-    public Sprite[] Star12 = new Sprite[4];
-    public Sprite[] Star13 = new Sprite[4];
-    public Sprite[] Star14 = new Sprite[4];
-    public Sprite[] Star15 = new Sprite[4];
-    public Sprite[] Star16 = new Sprite[4];
-    public Sprite[] Star17 = new Sprite[4];
+    const int numOpacityLevels = 4;
+    public Sprite[] Star1 = new Sprite[numOpacityLevels];
+    public Sprite[] Star2 = new Sprite[numOpacityLevels];
+    public Sprite[] Star3 = new Sprite[numOpacityLevels];
+//    public Sprite[] Star4 = new Sprite[numOpacityLevels]; // I accidentally forgot to put sprites here and don't have time to fix the numbering now
+    public Sprite[] Star5 = new Sprite[numOpacityLevels];
+    public Sprite[] Star6 = new Sprite[numOpacityLevels];
+    public Sprite[] Star7 = new Sprite[numOpacityLevels];
+    public Sprite[] Star8 = new Sprite[numOpacityLevels];
+    public Sprite[] Star9 = new Sprite[numOpacityLevels];
+    public Sprite[] Star10 = new Sprite[numOpacityLevels];
+    public Sprite[] Star11 = new Sprite[numOpacityLevels];
+    public Sprite[] Star12 = new Sprite[numOpacityLevels];
+    public Sprite[] Star13 = new Sprite[numOpacityLevels];
+    public Sprite[] Star14 = new Sprite[numOpacityLevels];
+    public Sprite[] Star15 = new Sprite[numOpacityLevels];
+    public Sprite[] Star16 = new Sprite[numOpacityLevels];
+    public Sprite[] Star17 = new Sprite[numOpacityLevels];
 
 
     private Sprite[][] stars;
@@ -37,9 +40,15 @@ public class NavStar : MonoBehaviour
         };
         var starIdx = new System.Random().Next(0, stars.Length);
         activeStar = stars[starIdx];
-        Debug.LogWarning($"starIdx:{starIdx} activeStar:{activeStar}");
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = activeStar[0]; // TODO opacity selection based on accuracy
+        
+        var tempoManager = Services.instance.Get<TempoManager>();
+        var accuracy = tempoManager.getAccuracyTime();
+        var failAccuracy = tempoManager.mediocreAccuracy + 0.25f;
+        var accuracyRamp = Mathf.RoundToInt(Mathf.Lerp(0, numOpacityLevels, accuracy / failAccuracy));
+        Debug.LogWarning($"starIdx:{starIdx} accuracyRamp:{accuracyRamp}");
+        
+        spriteRenderer.sprite = activeStar[accuracyRamp];
     }
 
     // Update is called once per frame
