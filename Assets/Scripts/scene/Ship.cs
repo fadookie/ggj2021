@@ -42,7 +42,6 @@ public class Ship : MonoBehaviour
     void Update() {
         // Check if we fell off the left side
         var leftSidePos = Camera.main.ScreenToWorldPoint(Vector3.zero);
-        Debug.LogWarning($"Ship posX:{transform.position.x} < leftSidePosX:{leftSidePos.x} = {transform.position.x < leftSidePos.x}");
         if (transform.position.x < leftSidePos.x) {
             var newPos = transform.position;
             newPos.x = leftSidePos.x;

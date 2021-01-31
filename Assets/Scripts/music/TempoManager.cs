@@ -102,6 +102,23 @@ public class TempoManager : MonoBehaviour
         return res;
     }
     
+    public float percentElapsedToNextTargetBeat() {
+        var beatDelay = beatsPerMinuteToDelay(bpm);
+        var currentBeat = totalBeats.Value;
+        if (relativeBeat % 2 == 0) {
+            --currentBeat;
+        }
+        var nextBeat = currentBeat + 2;
+        var nextBeatTime = beatTime(nextBeat);
+        var numerator = (nextBeatTime - source.time) - beatDelay;
+        var res =  1 - (numerator / beatDelay);
+        if (source.time - _lastLogTime > 0.5f) {
+            Debug.Log($"percentElapsedToNextTargetBeat delay:{beatDelay} time:{source.time} nextBeat:{nextBeat} nextBeatTime:{nextBeatTime} numerator:{numerator} pct:{res}");
+            _lastLogTime = source.time;
+        }
+        return res;
+    }
+    
     public float percentElapsedToBeat(float startTime, int beat) {
         var beatTime = this.beatTime(beat);
         var res = source.time - startTime / beatTime - startTime;
