@@ -7,11 +7,11 @@ public class TitleScreenMenu : MonoBehaviour
 {
 
     public void startGame(){
-        SceneManager.LoadScene("JonYarnTests");
+        SceneManager.LoadScene("Intro");
     }
     
     public void startShipGame(){
-        SceneManager.LoadScene("EliotDev1");
+        SceneManager.LoadScene("ShipGame");
     }
     public void mainMenu()
     {
