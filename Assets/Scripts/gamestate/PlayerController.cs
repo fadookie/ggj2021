@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
         if (health.Value < maxHealth) {
             health.Value += 10;
             onHeal.OnNext(Unit.Default);
+            Services.instance.Get<SfxPlayer>().PlaySound(SfxPlayer.Sound.Heal);
         }
     }
 

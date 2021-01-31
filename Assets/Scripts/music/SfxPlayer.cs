@@ -8,12 +8,14 @@ using UnityEngine;
 public class SfxPlayer : MonoBehaviour
 {
     public AudioClip DamageSound;
+    public AudioClip HealSound;
 
     private AudioSource player;
 
     public enum Sound
     {
         Damage,
+        Heal,
     }
 
     void Awake() {
@@ -29,6 +31,9 @@ public class SfxPlayer : MonoBehaviour
         switch (sound) {
             case Sound.Damage:
                 PlayClip(DamageSound);
+                break;
+            case Sound.Heal:
+                PlayClip(HealSound);
                 break;
             default:
                 throw new ArgumentException($"Unknown sound type: {sound}");

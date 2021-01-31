@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DamageSound: {fileID: 8300000, guid: 0f5862c6d20da4803b7a6263568c6b72, type: 3}
+  HealSound: {fileID: 8300000, guid: 9d0758cb3a2454196bcb82d4c47f8a1f, type: 3}
 --- !u!82 &1483818417630727762
 AudioSource:
   m_ObjectHideFlags: 0
