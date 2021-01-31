@@ -8,7 +8,7 @@ using UniRx;
 
 public class PlayerController : MonoBehaviour
 {
-    private const int maxHealth = 10;
+    private const int maxHealth = 100;
     public IntReactiveProperty health = new IntReactiveProperty(maxHealth);
     public Image healthBar;
     public GameObject failPanel;

@@ -1628,6 +1628,7 @@ MonoBehaviour:
   explosionParticle: {fileID: 7427212590095104776, guid: 62585b92d6dd34c729d7d72a78a25e68,
     type: 3}
   Speed: 4
+  RotationSpeed: 6
   DeathSpinSpeed: 100
 --- !u!212 &1830380595
 SpriteRenderer:

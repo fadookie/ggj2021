@@ -17,6 +17,7 @@ public class Ship : MonoBehaviour
     private bool isDying = false;
 
     public float Speed = 20;
+    public float RotationSpeed = 2;
     public float DeathSpinSpeed = 1;
     
     // Start is called before the first frame update
@@ -41,8 +42,14 @@ public class Ship : MonoBehaviour
         navStartTime = Time.time;
         var navDuration = Vector3.Distance(navStartPos, nextNavPoint.transform.position) / Speed;
         float elapsedTime;
+        
+        var vectorToTarget = nextNavPoint.transform.position - transform.position;
+        var targetAngle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90; // Sprite is pointing up so offset angle by 90 degrees
+        var targetRotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
+        
         do {
             elapsedTime = Time.time - navStartTime;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * RotationSpeed);
             transform.position = Vector3.Lerp(navStartPos, nextNavPoint.transform.position, elapsedTime / navDuration);
 //            Debug.LogWarning($"FlyToNavPoint navDuration:{navDuration} navStartPos:{navStartPos} navStartTime:{navStartTime} elapsedTime:{elapsedTime}");
             yield return null;
