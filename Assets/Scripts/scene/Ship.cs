@@ -2,13 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
+using UnityEditor;
 using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
     private NavPointManager _navPointManager;
     private int nextNavPointIdx = -1;
-    private GameObject nextNavPoint;
+    private Vector3? nextNavPoint;
     private Vector3 navStartPos;
     private float navStartTime;
     private bool flying;
@@ -17,6 +18,8 @@ public class Ship : MonoBehaviour
     public GameObject healParticle;
     public GameObject explosionParticle;
     private bool isDying = false;
+    private bool isWinning = false;
+    private Coroutine flyingRoutine;
 
     public float Speed = 20;
     public float RotationSpeed = 2;
@@ -27,6 +30,11 @@ public class Ship : MonoBehaviour
         _navPointManager = Services.instance.Get<NavPointManager>();
         player = Services.instance.Get<PlayerController>();
         player.OnHeal.Subscribe(_ => SpawnParticleChild(healParticle)).AddTo(this);
+		Services.instance.Get<MusicController>()
+			.MusicEventStream
+			.Where(evt => evt.type == MusicController.MusicEventType.Blastoff)
+			.Subscribe(MaybeStartWin)
+			.AddTo(this);
     }
 
     // Update is called once per frame
@@ -43,17 +51,17 @@ public class Ship : MonoBehaviour
 //        nextNavPoint.GetComponent<SpriteRenderer>().color = Color.red;
         navStartPos = transform.position;
         navStartTime = Time.time;
-        var navDuration = Vector3.Distance(navStartPos, nextNavPoint.transform.position) / Speed;
+        var navDuration = Vector3.Distance(navStartPos, nextNavPoint.Value) / Speed;
         float elapsedTime;
         
-        var vectorToTarget = nextNavPoint.transform.position - transform.position;
+        var vectorToTarget = nextNavPoint.Value - transform.position;
         var targetAngle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90; // Sprite is pointing up so offset angle by 90 degrees
         var targetRotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
         
         do {
             elapsedTime = Time.time - navStartTime;
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * RotationSpeed);
-            transform.position = Vector3.Lerp(navStartPos, nextNavPoint.transform.position, Easing.Sinusoidal.InOut(elapsedTime / navDuration));
+            transform.position = Vector3.Lerp(navStartPos, nextNavPoint.Value, Easing.Sinusoidal.InOut(elapsedTime / navDuration));
 //            Debug.LogWarning($"FlyToNavPoint navDuration:{navDuration} navStartPos:{navStartPos} navStartTime:{navStartTime} elapsedTime:{elapsedTime}");
             yield return null;
         } while (elapsedTime < navDuration);
@@ -61,11 +69,12 @@ public class Ship : MonoBehaviour
     }
 
     void TryAdvanceNavPoint() {
+        if (isWinning) return;
         if (nextNavPointIdx + 1 < _navPointManager.NavPoints.Count) {
             ++nextNavPointIdx;
-            nextNavPoint = _navPointManager.NavPoints[nextNavPointIdx];
+            nextNavPoint = _navPointManager.NavPoints[nextNavPointIdx].transform.position;
 //            Debug.LogWarning($"TryAdvanceNavPoint nextNavPointIdx:{nextNavPointIdx} nextNavPoint:{nextNavPoint}");
-            StartCoroutine(FlyToNavPoint());
+            flyingRoutine = StartCoroutine(FlyToNavPoint());
         } else {
             nextNavPoint = null;
             flying = false;
@@ -74,7 +83,7 @@ public class Ship : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         Debug.LogWarning($"Ship OnTriggerEnter2D other:{other}");
-        if (isDying) return;
+        if (isDying || isWinning) return;
         Services.instance.Get<SfxPlayer>().PlaySound(SfxPlayer.Sound.Damage);
         player.Damage();
         if (player.health.Value <= 0) {
@@ -83,6 +92,18 @@ public class Ship : MonoBehaviour
             // Hit obstacle
             Instantiate(hitParticle, transform.position, Quaternion.identity);
         }
+    }
+
+    void MaybeStartWin(MusicController.MusicEvent _) {
+        if (isDying) return;
+        isWinning = true;
+        Services.instance.Get<GameController>().IsWinning = true;
+        StopCoroutine(flyingRoutine);
+        nextNavPointIdx = -1;
+        var flyAwayTarget = transform.position;
+        flyAwayTarget.x += 50;
+        nextNavPoint = flyAwayTarget;
+        flyingRoutine = StartCoroutine(FlyToNavPoint());
     }
 
     IEnumerator Death() {
@@ -96,7 +117,7 @@ public class Ship : MonoBehaviour
             yield return null;
         } while (Time.time - deathStartTime < 2);
         GetComponent<SpriteRenderer>().enabled = false;
-        player.OnShipDeathFinished();
+        Services.instance.Get<GameController>().OnShipDeathFinished();
     }
 
     void SpawnParticleChild(GameObject prefab) {

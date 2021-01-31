@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     public IObservable<Unit> OnHeal => onHeal;
     public IntReactiveProperty health = new IntReactiveProperty(maxHealth);
     public Image healthBar;
-    public GameObject failPanel;
 
     private void Awake() {
         Services.instance.Set(this);
@@ -44,10 +43,6 @@ public class PlayerController : MonoBehaviour
             onHeal.OnNext(Unit.Default);
             Services.instance.Get<SfxPlayer>().PlaySound(SfxPlayer.Sound.Heal);
         }
-    }
-
-    public void OnShipDeathFinished() {
-        failPanel.SetActive(true);
     }
 
     public void OnClick(Vector3 mousePos) {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UniRx;
 
 using com.eliotlash.core.service;
 
@@ -12,7 +13,7 @@ public class MusicListenerShaderValPush : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		MusicController mc = Services.instance.Get<MusicController>();	
-		mc.musicEvent += onMusicEvent;
+		mc.MusicEventStream.Subscribe(onMusicEvent).AddTo(this);
 	}
 
 	void onMusicEvent(MusicController.MusicEvent mEvent) {

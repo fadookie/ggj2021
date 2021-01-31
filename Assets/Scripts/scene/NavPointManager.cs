@@ -12,6 +12,7 @@ public class NavPointManager : MonoBehaviour
 
     private List<GameObject> navPoints = new List<GameObject>();
     public IReadOnlyList<GameObject> NavPoints => navPoints;
+    private bool interactable = true;
     
     void Awake() {
         Services.instance.Set(this);
@@ -21,6 +22,11 @@ public class NavPointManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         Services.instance.Get<InputController>().MouseClicks.Subscribe(AddNavPoint).AddTo(this);
+		Services.instance.Get<MusicController>()
+			.MusicEventStream
+			.Where(evt => evt.type == MusicController.MusicEventType.Blastoff)
+			.Subscribe(_ => interactable = false)
+			.AddTo(this);
     }
 
     private GameObject spawnPrefabAt(Vector3 position)
@@ -34,6 +40,7 @@ public class NavPointManager : MonoBehaviour
 
 
     public void AddNavPoint(Vector3 position) {
+        if (!interactable) return;
         var go = spawnPrefabAt(position);
         navPoints.Add(go);
         lineRenderer.positionCount = navPoints.Count;

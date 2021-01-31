@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Linq.Expressions;
 using UniRx;
 using com.eliotlash.core.service;
 
@@ -10,6 +11,7 @@ public class SpawnArea : MonoBehaviour {
 	
 	BoxCollider2D spawnArea;
 	Vector2 maxSpawnPos;
+	private bool keepSpawning = true;
 	
 
 	void Awake() {
@@ -21,14 +23,19 @@ public class SpawnArea : MonoBehaviour {
 		spawnArea = GetComponent<BoxCollider2D>();
 		maxSpawnPos = new Vector2(spawnArea.size.x / 2, spawnArea.size.y / 2);
 		
-		var tempoManager = Services.instance.Get<TempoManager>();
-		tempoManager.Tempo.Subscribe(OnTempo).AddTo(this);
+		Services.instance.Get<TempoManager>().Tempo.Subscribe(OnTempo).AddTo(this);
+
+		Services.instance.Get<MusicController>()
+			.MusicEventStream
+			.Where(evt => evt.type == MusicController.MusicEventType.Outtro)
+			.Subscribe(_ => keepSpawning = false)
+			.AddTo(this);
 	}
 	
 	void OnTempo(TempoManager.TempoInfo info) {
 		if (info.RelativeBeat % 2 == 0) {
 			// Beats 2 & 4
-			Spawn();
+			if (keepSpawning) Spawn();
 		}
 	}
 

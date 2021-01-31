@@ -19,7 +19,7 @@ public class InputController : MonoBehaviour
 //            .Select(_ => Input.mousePosition)
 //            .Subscribe(mouseClicks)
 //            .AddTo(this);
-        mouseClicks.Subscribe(pos => Debug.LogWarning($"mouseClicked pos:{pos}")).AddTo(this);
+//        mouseClicks.Subscribe(pos => Debug.LogWarning($"mouseClicked pos:{pos}")).AddTo(this);
     }
 
     private void Update() {

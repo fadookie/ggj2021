@@ -1,28 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using com.eliotlash.core.service;
 using UnityEngine;
+using UniRx;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicController : MonoBehaviour {
-	#region Event declarations
-	public delegate void MusicEventHandler(MusicEvent mEvent);
-	public event MusicEventHandler musicEvent;
-	#endregion
-
 	public enum MusicEventType {
 		Start,
-		Synth1,
-		Synth2,
-		Break1,
-		Break1End,
 		Outtro,
+		Blastoff,
 		End
-
-		/* For Son:
-		LyricsStart,
-		FirstVerseStart,
-		BreakStart,
-*/
 	}
 
 	public class MusicEvent {
@@ -33,22 +21,22 @@ public class MusicController : MonoBehaviour {
 			this.type = type;
 		}
 	}
+	
+	Subject<MusicEvent> musicEventStream = new Subject<MusicEvent>();
+	public IObservable<MusicEvent> MusicEventStream => musicEventStream;
 
 	public List<MusicEvent> events = new List<MusicEvent> {
-		//For Raney2
-//		new MusicEvent(0, MusicEventType.Start),
-//		new MusicEvent(690327, MusicEventType.Synth1),
-//		new MusicEvent(1382652, MusicEventType.Synth2),
-//		new MusicEvent(2768088, MusicEventType.Break1),
-//		new MusicEvent(4142762, MusicEventType.Break1End),
-//		new MusicEvent(6222134, MusicEventType.Outtro),
-//		new MusicEvent(6571292, MusicEventType.End), Doesn't seem to fire, hardcode this
-		/* For Son:
-		new MusicEvent(35955, MusicEventType.Start),
-		new MusicEvent(505827, MusicEventType.LyricsStart),
-		new MusicEvent(1554084, MusicEventType.FirstVerseStart),
-		new MusicEvent(1984066, MusicEventType.BreakStart),
-*/
+		new MusicEvent(0, MusicEventType.Start),
+		
+		/*
+		// Real song
+		new MusicEvent(4498026, MusicEventType.Outtro),
+		new MusicEvent(4695018, MusicEventType.Blastoff),
+		*/
+		
+		// Click Track
+		new MusicEvent(1058400, MusicEventType.Outtro),
+		new MusicEvent(1234800, MusicEventType.Blastoff),
 	};
 
 	List<MusicEvent> popped = new List<MusicEvent>(3);
@@ -62,15 +50,19 @@ public class MusicController : MonoBehaviour {
 			Services.instance.Set(this);
 		}
 	}
-	
+
+	private void Start() {
+		musicEventStream.Subscribe(evt =>
+			Debug.LogWarning($"Pop event at {source.timeSamples}, popTimeSmp={evt.popTimeSmp}, type={evt.type}")
+		)
+		.AddTo(this);
+	}
+
 	// Update is called once per frame
 	void Update () {
 		foreach(MusicEvent mEvent in events) {
 			if (source.timeSamples >= mEvent.popTimeSmp) {
-				Debug.Log(string.Format("Pop event at {0}, popTimeSmp={1}, type={2}", source.timeSamples, mEvent.popTimeSmp, mEvent.type.ToString()));
-				if (musicEvent != null) {
-					musicEvent(mEvent);
-				}
+				musicEventStream.OnNext(mEvent);
 				popped.Add(mEvent);
 			}
 		}
@@ -81,7 +73,7 @@ public class MusicController : MonoBehaviour {
 		popped.Clear();
 
 		if (!endPopped && !source.isPlaying) {
-			musicEvent(new MusicEvent(source.timeSamples, MusicEventType.End));
+			musicEventStream.OnNext(new MusicEvent(source.timeSamples, MusicEventType.End));
 			endPopped = true;
 		}
 	}
