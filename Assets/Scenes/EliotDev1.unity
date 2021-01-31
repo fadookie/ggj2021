@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8f101459fdca4d66840637dbb2c9bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 60
+  bpm: 176
   beatsPerMeasure: 4
   greatAccuracy: 0.15
   mediocreAccuracy: 0.5
@@ -302,7 +302,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 10df0361eced24c2b97eaf2a870e4657, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b9c51aa09e8f24324a19200a1fef9ae3, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
