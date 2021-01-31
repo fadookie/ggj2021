@@ -9,6 +9,8 @@ using UniRx;
 public class PlayerController : MonoBehaviour
 {
     private const int maxHealth = 100;
+    Subject<Unit> onDamage = new Subject<Unit>();
+    public IObservable<Unit> OnDamage => onDamage;
     Subject<Unit> onHeal = new Subject<Unit>();
     public IObservable<Unit> OnHeal => onHeal;
     public IntReactiveProperty health = new IntReactiveProperty(maxHealth);
@@ -32,6 +34,7 @@ public class PlayerController : MonoBehaviour
 
     public void Damage() {
         health.Value -= 10;
+        onDamage.OnNext(Unit.Default);
         if (health.Value <= 0) {
             Debug.LogError("Player died!");
         }

@@ -1108,6 +1108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 2
+  ShakeDuration: 0.25
+  ShakeMagnitude: 0.25
 --- !u!1 &1101834464
 GameObject:
   m_ObjectHideFlags: 0
