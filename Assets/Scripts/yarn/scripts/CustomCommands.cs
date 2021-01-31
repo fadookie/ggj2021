@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -86,19 +87,31 @@ public class CustomCommands : MonoBehaviour
     public void startCurrentScene(string[] parameters,System.Action onComplete){
         fadeToBlackElapsed = 0;
         fadeSceneIn = true;
-        fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, 1);
-        StartCoroutine(fadeScene(onComplete));
+//        fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, 1);
+        StartCoroutine(fadeScene(1, 0, onComplete));
     }
 
     public void endCurrentScene(string[] parameters,System.Action onComplete){
           fadeToBlackElapsed = 0;
           fadeSceneIn = false;
-          fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, 1);
-          StartCoroutine(fadeScene(onComplete));
+//          fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, 1);
+          StartCoroutine(fadeScene(0, 1, onComplete));
     }
 
-    private IEnumerator fadeScene(System.Action onComplete){
-        yield return new WaitForSeconds(fadeToBlackTime);
+    private IEnumerator fadeScene(float startAlpha, float targetAlpha, System.Action onComplete){
+//        yield return new WaitForSeconds(fadeToBlackTime);
+        var startTime = Time.time;
+        float elapsed;
+        Debug.LogWarning($"fadeScene startAlpha:{startAlpha} targetAlpha:{targetAlpha}");
+        do {
+            elapsed = Time.time - startTime;
+            var pct = elapsed / fadeToBlackTime;
+            var newColor = fadeOutPanel.color;
+            newColor.a = Mathf.Lerp(startAlpha, targetAlpha, pct);
+            fadeOutPanel.color = newColor;
+            Debug.LogWarning($"fadeScene elapsed:{elapsed} pct:{pct} currentColor:{fadeOutPanel.color}");
+            yield return null;
+        } while (elapsed < fadeToBlackTime);
         onComplete();
     }
 
@@ -112,17 +125,17 @@ public class CustomCommands : MonoBehaviour
     public void Update(){
         speakerOneElapsed+=Time.deltaTime;
         speakerTwoElapsed+=Time.deltaTime;
-        fadeToBlackElapsed+=Time.deltaTime;
-
-        if(fadeToBlackElapsed <= fadeToBlackTime){
-            float t = fadeToBlackElapsed / fadeToBlackTime;
-            if(fadeSceneIn){
-                fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, speakerOneInitialAlpha * (1 - t)+0*t);
-            }else{
-                fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, speakerOneInitialAlpha * (1 - t)+1*t);
-
-            }
-        }
+//        fadeToBlackElapsed+=Time.deltaTime;
+//
+//        if(fadeToBlackElapsed <= fadeToBlackTime){
+//            float t = fadeToBlackElapsed / fadeToBlackTime;
+//            if(fadeSceneIn){
+//                fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, speakerOneInitialAlpha * (1 - t)+0*t);
+//            }else{
+//                fadeOutPanel.color = new Color(fadeOutPanel.color.r,fadeOutPanel.color.g,fadeOutPanel.color.b, speakerOneInitialAlpha * (1 - t)+1*t);
+//
+//            }
+//        }
 
         if(speakerOneElapsed <= speakerFadeTime){
             // speaker 1 fading
