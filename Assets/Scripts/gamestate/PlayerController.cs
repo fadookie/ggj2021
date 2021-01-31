@@ -17,10 +17,15 @@ public class PlayerController : MonoBehaviour
 
     public void Damage() {
         health.Value -= 10;
+        if (health.Value <= 0) {
+            Debug.LogError("Player died!");
+        }
     }
     
     public void Heal() {
-        health.Value += 10;
+        if (health.Value < maxHealth) {
+            health.Value += 10;
+        }
     }
 
     // Start is called before the first frame update
