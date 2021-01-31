@@ -161,9 +161,11 @@ tags:
 colorID: 0
 position:
 ---
+<<wait 0>>
 <<setlocation Mysterious_Dreamlike_Planet>>
 <<setdate December_2120>>
 <<start_scene>>
+<<fadein speaker2>>
 Captain: ...
 Captain: (It's so quiet here.)
 Captain: ...
@@ -201,5 +203,5 @@ Dreamer: Don't cry, love. It really <i>is</i> me~
 Dreamer: The stars led you here. 
 Captain: Yes... like some kind of miracle. // then we have the ending screen
 <<end_scene>>
-<<load_scene EndScene>>
+<<load_scene Outro>>
 ===
