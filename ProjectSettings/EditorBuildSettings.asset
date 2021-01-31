@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/TitleScreen.unity
+    guid: 5d17380b222307244946ee1eb13caf4b
+  - enabled: 1
+    path: Assets/Scenes/JonYarnTests.unity
+    guid: 4367943698d58924fa658cc3747c0e33
   m_configObjects: {}

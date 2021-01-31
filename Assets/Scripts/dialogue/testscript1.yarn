@@ -1,0 +1,22 @@
+title: SomeNode
+tags: 
+colorID: 3
+position: 381,61
+---
+Hello you are cool
+-> I am?
+    Yes!
+-> Ofcourse I am
+[[SecondNode]]
+===
+title: SecondNode
+tags: 
+colorID: 0
+position: 73,311
+---
+Some other text
+-> Some option
+    ok then
+-> Some other option?
+    this is some other option woooooohooo
+===
